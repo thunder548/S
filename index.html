@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم ادارة Space.net</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f8fafc;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        #map {
+            height: 450px;
+            border-radius: 0.75rem;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col antialiased">
+
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- Sidebar Navigation (Mainly secondary or mobile drawer now since cards are on homepage) -->
+        <aside id="sidebar" class="bg-slate-950 border-l border-slate-800 w-64 flex-shrink-0 flex flex-col transition-all duration-300 z-30 fixed lg:static inset-y-0 right-0 transform translate-x-full lg:translate-x-0">
+            <div class="p-5 flex items-center justify-between border-b border-slate-800">
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/30">
+                        <i class="fa-solid fa-tower-broadcast"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg text-white leading-tight">سبيس نت</h1>
+                        <p class="text-xs text-slate-400">إدارة الأبراج والمشتركين</p>
+                    </div>
+                </div>
+                <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto">
+                <a href="#" onclick="switchTab('home', this)" class="nav-item flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl font-medium text-sm transition-all bg-blue-600 text-white shadow-lg shadow-blue-600/20">
+                    <i class="fa-solid fa-chart-pie w-5 text-center"></i>
+                    <span>الرئيسية</span>
+                </a>
+                <a href="#" onclick="switchTab('subscribers', this)" class="nav-item flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl font-medium text-sm transition-all text-slate-300 hover:bg-slate-900 hover:text-white">
+                    <i class="fa-solid fa-users w-5 text-center"></i>
+                    <span>المشتركون</span>
+                </a>
+                <a href="#" onclick="switchTab('online', this)" class="nav-item flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl font-medium text-sm transition-all text-slate-300 hover:bg-slate-900 hover:text-white">
+                    <i class="fa-solid fa-signal w-5 text-center"></i>
+                    <span>المشترك المتصل</span>
+                    <span class="mr-auto bg-emerald-500/20 text-emerald-400 text-xs px-2 py-0.5 rounded-full font-bold">50</span>
+                </a>
+                <a href="#" onclick="switchTab('offline', this)" class="nav-item flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl font-medium text-sm transition-all text-slate-300 hover:bg-slate-900 hover:text-white">
+                    <i class="fa-solid fa-user-slash w-5 text-center"></i>
+                    <span>مفصول (عدم دفع)</span>
+                    <span class="mr-auto bg-rose-500/20 text-rose-400 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+                </a>
+                <a href="#" onclick="switchTab('finance', this)" class="nav-item flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl font-medium text-sm transition-all text-slate-300 hover:bg-slate-900 hover:text-white">
+                    <i class="fa-solid fa-wallet w-5 text-center"></i>
+                    <span>حسابات مالية</span>
+                </a>
+                <a href="#" onclick="switchTab('tasks', this)" class="nav-item flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl font-medium text-sm transition-all text-slate-300 hover:bg-slate-900 hover:text-white">
+                    <i class="fa-solid fa-clipboard-list w-5 text-center"></i>
+                    <span>تكليف الأبراج</span>
+                </a>
+                <a href="#" onclick="switchTab('packages', this)" class="nav-item flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl font-medium text-sm transition-all text-slate-300 hover:bg-slate-900 hover:text-white">
+                    <i class="fa-solid fa-box-archive w-5 text-center"></i>
+                    <span>اشتراكات العملاء</span>
+                </a>
+                <a href="#" onclick="switchTab('map-view', this)" class="nav-item flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl font-medium text-sm transition-all text-slate-300 hover:bg-slate-900 hover:text-white">
+                    <i class="fa-solid fa-map-location-dot w-5 text-center"></i>
+                    <span>مواقع الأبراج</span>
+                </a>
+            </nav>
+
+            <!-- User Profile Widget in Sidebar -->
+            <div class="p-4 border-t border-slate-800 bg-slate-900/50">
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <img src="https://placehold.co/40x40/3b82f6/ffffff?text=مدير" alt="Admin" class="w-10 h-10 rounded-full border border-blue-500/30">
+                    <div class="overflow-hidden">
+                        <h4 class="text-sm font-bold text-white truncate">عمار نضال قصاب</h4>
+                        <p class="text-xs text-slate-400 truncate">مدير النظام العام</p>
+                    </div>
+                    <button onclick="showNotification('تم تسجيل الخروج بنجاح', 'info')" class="mr-auto text-slate-400 hover:text-rose-400">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden relative">
+            
+            <!-- Floating Back Button (زر رجوع عائم صغير ومتناسق) -->
+            <button onclick="goBackToHome()" id="floatingBackBtn" title="الرجوع للرئيسية" class="hidden absolute bottom-6 left-6 z-50 bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-full shadow-2xl flex items-center justify-center w-11 h-11 transition-all transform hover:scale-105 active:scale-95 border border-blue-400/30">
+                <i class="fa-solid fa-arrow-right text-sm"></i>
+            </button>
+
+            <!-- Top Header -->
+            <header class="bg-slate-950/80 backdrop-blur border-b border-slate-800 h-16 flex items-center justify-between px-6 z-20">
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <button onclick="toggleSidebar()" class="lg:hidden text-slate-300 hover:text-white text-xl">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h2 id="current-page-title" class="text-lg font-bold text-white">الرئيسية (لوحة التحكم)</h2>
+                </div>
+
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <div class="relative hidden sm:block">
+                        <input type="text" placeholder="بحث سريع في النظام..." class="bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-blue-500 w-64 pr-10">
+                        <i class="fa-solid fa-search absolute top-3 right-3.5 text-slate-500 text-sm"></i>
+                    </div>
+                    <button onclick="showNotification('لا توجد إشعارات جديدة حالياً', 'info')" class="relative p-2 text-slate-300 hover:text-white bg-slate-900 border border-slate-800 rounded-xl">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="absolute top-1.5 left-1.5 w-2 h-2 bg-blue-500 rounded-full animate-ping"></span>
+                        <span class="absolute top-1.5 left-1.5 w-2 h-2 bg-blue-500 rounded-full"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto p-6 bg-slate-900">
+                
+                <!-- 1. الرئيسية (Home Tab with Moved Sidebar Navigation Links/Cards) -->
+                <div id="tab-home" class="tab-content active space-y-6">
+                    
+                    <!-- Welcome & Quick Menu Section (Moving Sidebar features here) -->
+                    <div class="bg-gradient-to-r from-blue-900/40 via-slate-950 to-slate-950 border border-blue-500/30 p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-xl font-black text-white mb-2">مرحباً  Space.net</h3>
+                        <p class="text-sm text-slate-300 mb-6">
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <button onclick="switchTab('subscribers', document.querySelectorAll('.nav-item')[1])" class="bg-slate-900 hover:bg-slate-800 border border-slate-800 p-4 rounded-xl text-right transition-all group">
+                                <div class="w-10 h-10 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-sm">المشتركون</h4>
+                                <p class="text-xs text-slate-400 mt-1">إدارة بيانات العملاء</p>
+                            </button>
+
+                            <button onclick="switchTab('online', document.querySelectorAll('.nav-item')[2])" class="bg-slate-900 hover:bg-slate-800 border border-slate-800 p-4 rounded-xl text-right transition-all group">
+                                <div class="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-signal"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-sm">المتصلون</h4>
+                                <p class="text-xs text-slate-400 mt-1">المشتركون أونلاين</p>
+                            </button>
+
+                            <button onclick="switchTab('offline', document.querySelectorAll('.nav-item')[3])" class="bg-slate-900 hover:bg-slate-800 border border-slate-800 p-4 rounded-xl text-right transition-all group">
+                                <div class="w-10 h-10 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-user-slash"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-sm">المفصولون</h4>
+                                <p class="text-xs text-slate-400 mt-1">بسبب عدم الدفع</p>
+                            </button>
+
+                            <button onclick="switchTab('finance', document.querySelectorAll('.nav-item')[4])" class="bg-slate-900 hover:bg-slate-800 border border-slate-800 p-4 rounded-xl text-right transition-all group">
+                                <div class="w-10 h-10 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-wallet"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-sm">الحسابات المالية</h4>
+                                <p class="text-xs text-slate-400 mt-1">الملخص المالي والواردات</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-slate-400">إجمالي المشتركين</p>
+                                <h3 class="text-2xl font-black text-white mt-1">50</h3>
+                                <span class="text-xs text-emerald-400 font-semibold mt-2 inline-block"><i class="fa-solid fa-arrow-trend-up ml-1"></i> +12% هذا الشهر</span>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-2xl flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-slate-400">المشتركون المتصلون</p>
+                                <h3 class="text-2xl font-black text-white mt-1">45</h3>
+                                <span class="text-xs text-emerald-400 font-semibold mt-2 inline-block"><i class="fa-solid fa-signal ml-1"></i> استقرار بنسبة 90%</span>
+                            </div>
+                            <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-network-wired"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-slate-400">المفصولون (عدم دفع)</p>
+                                <h3 class="text-2xl font-black text-white mt-1">0</h3>
+                                <span class="text-xs text-rose-400 font-semibold mt-2 inline-block"><i class="fa-solid fa-triangle-exclamation ml-1"></i> مستحقات متأخرة</span>
+                            </div>
+                            <div class="w-12 h-12 bg-rose-500/10 text-rose-400 rounded-2xl flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-user-xmark"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-slate-400">إيرادات الشهر (دولار)</p>
+                                <h3 class="text-2xl font-black text-white mt-1">$450</h3>
+                                <span class="text-xs text-blue-400 font-semibold mt-2 inline-block"><i class="fa-solid fa-wallet ml-1"></i> تم تحصيل 85%</span>
+                            </div>
+                            <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-2xl flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Tower Status Widget -->
+                    <div class="bg-slate-950 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                        <h3 class="font-bold text-white mb-4">حالة الأبراج الرئيسية</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 bg-slate-900 rounded-xl">
+                                <div class="flex items-center space-x-3 space-x-reverse">
+                                    <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-white">برج الضاحية الرئيسي</h4>
+                                        <p class="text-xs text-slate-400">بث مباشر - تحميل 98%</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-lg">متصل</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-slate-900 rounded-xl">
+                                <div class="flex items-center space-x-3 space-x-reverse">
+                                    <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-white">نقطة مزارع غرب المشتل 1</h4>
+                                        <p class="text-xs text-slate-400">بث مباشر - تحميل 82%</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-lg">متصل</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-slate-900 rounded-xl">
+                                <div class="flex items-center space-x-3 space-x-reverse">
+                                    <div class="w-3 h-3 bg-rose-500 rounded-full"></div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-white">نقطة مزارع غرب 2</h4>
+                                        <p class="text-xs text-slate-400">انقطاع في التيار الكهربائي</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-rose-500/20 text-rose-400 px-2.5 py-1 rounded-lg">غير متصل</span>
+                            </div>
+                        </div>
+                        <button onclick="switchTab('map-view', document.querySelectorAll('.nav-item')[7])" class="w-full mt-4 bg-slate-900 hover:bg-slate-800 text-blue-400 text-xs font-bold py-2.5 rounded-xl transition-all">
+                            عرض كافة الأبراج على الخريطة <i class="fa-solid fa-arrow-left mr-1"></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-white">آخر النشاطات في الشبكة</h3>
+                            <button onclick="showNotification('تم تحديث السجل بنجاح', 'success')" class="text-xs text-blue-400 hover:underline">تحديث السجل</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-right text-sm">
+                                <thead class="bg-slate-900 text-slate-400 text-xs uppercase">
+                                    <tr>
+                                        <th class="p-3 rounded-r-xl">نوع الحدث</th>
+                                        <th class="p-3">المشترك / العنصر</th>
+                                        <th class="p-3">التفاصيل</th>
+                                        <th class="p-3">التوقيت</th>
+                                        <th class="p-3 rounded-l-xl">الحالة</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800 text-slate-300">
+                                    <tr>
+                                        <td class="p-3 font-medium text-white flex items-center space-x-2 space-x-reverse"><i class="fa-solid fa-user-plus text-blue-400 ml-2"></i>اشتراك جديد</td>
+                                        <td class="p-3">محمد خالد النجار</td>
+                                        <td class="p-3">باقة الإحترافية (50M)</td>
+                                        <td class="p-3 text-slate-500 text-xs">منذ 10 دقائق</td>
+                                        <td class="p-3"><span class="bg-emerald-500/20 text-emerald-400 text-xs px-2.5 py-1 rounded-lg">مفعل</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-medium text-white flex items-center space-x-2 space-x-reverse"><i class="fa-solid fa-money-bill-wave text-emerald-400 ml-2"></i>تسديد فاتورة</td>
+                                        <td class="p-3">سامر الحمصي</td>
+                                        <td class="p-3">تجديد اشتراك شهري ($10)</td>
+                                        <td class="p-3 text-slate-500 text-xs">منذ 35 دقيقة</td>
+                                        <td class="p-3"><span class="bg-emerald-500/20 text-emerald-400 text-xs px-2.5 py-1 rounded-lg">مكتمل</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. المشتركون (Subscribers Tab with Add/Delete Option) -->
+                <div id="tab-subscribers" class="tab-content space-y-6">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-950 p-4 border border-slate-800 rounded-2xl">
+                        <div class="relative w-full sm:w-80">
+                            <input type="text" id="subSearch" onkeyup="filterSubscribers()" placeholder="بحث باسم المشترك أو الهاتف..." class="bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-500 w-full pr-10">
+                            <i class="fa-solid fa-search absolute top-3.5 right-3.5 text-slate-500 text-sm"></i>
+                        </div>
+                        <div class="flex items-center space-x-3 space-x-reverse w-full sm:w-auto">
+                            <select id="subStatusFilter" onchange="filterSubscribers()" class="bg-slate-900 border border-slate-800 text-sm text-slate-300 rounded-xl px-4 py-2.5 focus:outline-none">
+                                <option value="all">جميع الحالات</option>
+                                <option value="online">متصل</option>
+                                <option value="offline">غير متصل (بسبب الدفع)</option>
+                                <option value="active">نشط</option>
+                            </select>
+                            <button onclick="openAddSubscriberModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-lg shadow-blue-600/20 transition-all flex items-center space-x-2 space-x-reverse w-full sm:w-auto justify-center">
+                                <i class="fa-solid fa-user-plus"></i>
+                                <span>إضافة مشترك</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Subscribers Table with Dynamic Add/Delete support -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-right text-sm" id="subscribersTable">
+                                <thead class="bg-slate-900 text-slate-400 text-xs uppercase">
+                                    <tr>
+                                        <th class="p-4">اسم المشترك</th>
+                                        <th class="p-4">رقم الهاتف</th>
+                                        <th class="p-4">الباقة</th>
+                                        <th class="p-4">البرج المرتبط</th>
+                                        <th class="p-4">تاريخ التجديد</th>
+                                        <th class="p-4">الحالة</th>
+                                        <th class="p-4 text-center">إضافة / حذف وإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800 text-slate-300" id="subscribersListContainer">
+                                    <tr class="hover:bg-slate-900/50 transition-all" data-id="1">
+                                        <td class="p-4 font-bold text-white flex items-center space-x-3 space-x-reverse">
+                                            <div class="w-8 h-8 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold text-xs">مح</div>
+                                            <span>محمد خالد النجار</span>
+                                        </td>
+                                        <td class="p-4 text-slate-400">0933123456</td>
+                                        <td class="p-4"><span class="bg-blue-500/10 text-blue-400 text-xs px-2.5 py-1 rounded-lg">الإحترافية (50M)</span></td>
+                                        <td class="p-4">برج الضاحية الرئيسي</td>
+                                        <td class="p-4 text-slate-400">2026/11/01</td>
+                                        <td class="p-4"><span class="bg-emerald-500/20 text-emerald-400 text-xs px-2.5 py-1 rounded-lg">متصل</span></td>
+                                        <td class="p-4 text-center space-x-2 space-x-reverse">
+                                            <button onclick="showNotification('تم عرض تفاصيل المشترك', 'info')" class="text-blue-400 hover:text-blue-300 p-1.5 bg-slate-900 rounded-lg"><i class="fa-solid fa-eye"></i></button>
+                                            <button onclick="deleteSubscriberRow(this)" class="text-rose-400 hover:text-rose-300 p-1.5 bg-slate-900 rounded-lg" title="حذف المشترك"><i class="fa-solid fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-900/50 transition-all" data-id="2">
+                                        <td class="p-4 font-bold text-white flex items-center space-x-3 space-x-reverse">
+                                            <div class="w-8 h-8 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold text-xs">سا</div>
+                                            <span>سامر الحمصي</span>
+                                        </td>
+                                        <td class="p-4 text-slate-400">0944987654</td>
+                                        <td class="p-4"><span class="bg-purple-500/10 text-purple-400 text-xs px-2.5 py-1 rounded-lg">المنزلية السريعة (25M)</span></td>
+                                        <td class="p-4">نقطة مزارع غرب المشتل 1</td>
+                                        <td class="p-4 text-slate-400">2026/10/25</td>
+                                        <td class="p-4"><span class="bg-emerald-500/20 text-emerald-400 text-xs px-2.5 py-1 rounded-lg">متصل</span></td>
+                                        <td class="p-4 text-center space-x-2 space-x-reverse">
+                                            <button onclick="showNotification('تم عرض تفاصيل المشترك', 'info')" class="text-blue-400 hover:text-blue-300 p-1.5 bg-slate-900 rounded-lg"><i class="fa-solid fa-eye"></i></button>
+                                            <button onclick="deleteSubscriberRow(this)" class="text-rose-400 hover:text-rose-300 p-1.5 bg-slate-900 rounded-lg" title="حذف المشترك"><i class="fa-solid fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. المشترك المتصل (Online Subscribers Tab) -->
+                <div id="tab-online" class="tab-content space-y-6">
+                    <div class="bg-slate-950 border border-slate-800 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-bold text-white text-lg">المشتركون المتصلون حالياً على الشبكة</h3>
+                            <p class="text-xs text-slate-400 mt-1">عرض الأجهزة الموصولة، استهلاك البيانات اللحظي، وعنوان IP لكل مشترك.</p>
+                        </div>
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <span class="bg-emerald-500/20 text-emerald-400 text-sm px-4 py-2 rounded-xl font-bold border border-emerald-500/30">
+                                <i class="fa-solid fa-signal ml-2"></i> إجمالي المتصلين: 50 مشترك
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-2 h-full bg-emerald-500"></div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs bg-slate-900 text-slate-300 px-3 py-1 rounded-lg font-mono">192.168.10.45</span>
+                                <span class="flex items-center text-xs text-emerald-400 font-bold"><span class="w-2 h-2 bg-emerald-500 rounded-full ml-1.5 animate-ping"></span> متصل الآن</span>
+                            </div>
+                            <h4 class="font-bold text-white text-base">بسام الأحمد</h4>
+                            <p class="text-xs text-slate-400 mt-0.5">برج القلعة الرئيسي - سكتور B</p>
+                            <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between text-xs text-slate-300">
+                                <span>الاستهلاك: <strong class="text-white">45.2 GB</strong></span>
+                                <span>السرعة: <strong class="text-emerald-400">50 Mbps</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-2 h-full bg-emerald-500"></div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs bg-slate-900 text-slate-300 px-3 py-1 rounded-lg font-mono">192.168.12.88</span>
+                                <span class="flex items-center text-xs text-emerald-400 font-bold"><span class="w-2 h-2 bg-emerald-500 rounded-full ml-1.5 animate-ping"></span> متصل الآن</span>
+                            </div>
+                            <h4 class="font-bold text-white text-base">د. رامي السعيد</h4>
+                            <p class="text-xs text-slate-400 mt-0.5">برج حي الأزهري - سكتور A</p>
+                            <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between text-xs text-slate-300">
+                                <span>الاستهلاك: <strong class="text-white">112.4 GB</strong></span>
+                                <span>السرعة: <strong class="text-emerald-400">25 Mbps</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. مفصول (عدم دفع) -->
+                <div id="tab-offline" class="tab-content space-y-6">
+                    <div class="bg-slate-950 border border-slate-800 p-6 rounded-2xl">
+                        <h3 class="font-bold text-white text-lg mb-2">المشتركون المفصولون بسبب تأخر الدفع</h3>
+                        <p class="text-xs text-slate-400 mb-6">قائمة المشتركين الذين تم قطع الخدمة عنهم تلقائياً لعدم تجديد الاشتراك.</p>
+                        
+                        <div class="text-center py-12 text-slate-500">
+                            <i class="fa-solid fa-circle-check text-4xl text-emerald-500 mb-3"></i>
+                            <p class="text-sm font-semibold text-slate-300">لا توجد حالات فصل حالياً، جميع المشتركين مسددون لاشتراكاتهم.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. حسابات مالية (Financial Summary & Automated Calculation) -->
+                <div id="tab-finance" class="tab-content space-y-6">
+                    <div class="bg-slate-950 border border-slate-800 p-6 rounded-2xl">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+                            <div>
+                                <h3 class="font-bold text-white text-lg">القسم المالي وإدارة الإيرادات والمصروفات</h3>
+                                <p class="text-xs text-slate-400 mt-1">أضف البنود المالية والمبالغ ليتم حساب الإجمالي تلقائياً بشكل فوري.</p>
+                            </div>
+                            <button onclick="addFinancialRow()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg transition-all flex items-center space-x-2 space-x-reverse">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>إضافة بند مالي جديد</span>
+                            </button>
+                        </div>
+
+                        <!-- Financial Summary Total Box -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                            <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-slate-400">إجمالي الواردات المحسوبة</p>
+                                    <h4 id="totalFinancialSum" class="text-xl font-black text-emerald-400 mt-1">$450.00</h4>
+                                </div>
+                                <div class="w-10 h-10 bg-emerald-500/10 text-emerald-400 rounded-lg flex items-center justify-center">
+                                    <i class="fa-solid fa-calculator"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Financial Table -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-right text-sm" id="financialTable">
+                                <thead class="bg-slate-900 text-slate-400 text-xs uppercase">
+                                    <tr>
+                                        <th class="p-3 rounded-r-xl">اسم البند أو المعاملة</th>
+                                        <th class="p-3">النوع</th>
+                                        <th class="p-3">المبلغ ($)</th>
+                                        <th class="p-3">التاريخ</th>
+                                        <th class="p-3 rounded-l-xl text-center">إجراء (حذف)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800 text-slate-300" id="financialListContainer">
+                                    <tr class="hover:bg-slate-900/50">
+                                        <td class="p-3 font-medium text-white">اشتراك باقة محمد النجار</td>
+                                        <td class="p-3"><span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-xs font-bold">وارد</span></td>
+                                        <td class="p-3 font-mono font-bold text-emerald-400 amount-cell">250</td>
+                                        <td class="p-3 text-slate-400 text-xs">2026/10/01</td>
+                                        <td class="p-3 text-center">
+                                            <button onclick="deleteFinancialRow(this)" class="text-rose-400 hover:text-rose-300 p-1.5 bg-slate-900 rounded-lg"><i class="fa-solid fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-900/50">
+                                        <td class="p-3 font-medium text-white">اشتراك باقة سامر الحمصي</td>
+                                        <td class="p-3"><span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-xs font-bold">وارد</span></td>
+                                        <td class="p-3 font-mono font-bold text-emerald-400 amount-cell">200</td>
+                                        <td class="p-3 text-slate-400 text-xs">2026/10/02</td>
+                                        <td class="p-3 text-center">
+                                            <button onclick="deleteFinancialRow(this)" class="text-rose-400 hover:text-rose-300 p-1.5 bg-slate-900 rounded-lg"><i class="fa-solid fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. تكليف الأبراج -->
+                <div id="tab-tasks" class="tab-content space-y-6">
+                    <div class="bg-slate-950 border border-slate-800 p-6 rounded-2xl">
+                        <h3 class="font-bold text-white text-lg mb-2">تكليف الأبراج والفنيين</h3>
+                        <p class="text-xs text-slate-400 mb-6">إدارة المهام الميدانية وصيانة محطات البث.</p>
+                        <div class="text-center py-10 text-slate-500">
+                            <i class="fa-solid fa-clipboard-list text-3xl mb-2 text-blue-500"></i>
+                            <p class="text-sm">لا توجد مهام صيانة معلقة حالياً.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. اشتراكات العملاء (Packages with Add/Delete option) -->
+                <div id="tab-packages" class="tab-content space-y-6">
+                    <div class="bg-slate-950 border border-slate-800 p-6 rounded-2xl">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 class="font-bold text-white text-lg">إدارة الباقات والاشتراكات</h3>
+                                <p class="text-xs text-slate-400 mt-1">إضافة أو حذف باقات السرعة المتاحة للمشتركين.</p>
+                            </div>
+                            <button onclick="openAddPackageModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg transition-all flex items-center space-x-2 space-x-reverse">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>إضافة باقة جديدة</span>
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="packagesGridContainer">
+                            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl relative">
+                                <button onclick="deletePackageCard(this)" class="absolute top-4 left-4 text-rose-400 hover:text-rose-300 p-1 bg-slate-950 rounded-lg"><i class="fa-solid fa-trash text-xs"></i></button>
+                                <h4 class="font-bold text-white text-base mb-1">باقة الإحترافية</h4>
+                                <p class="text-xs text-blue-400 font-mono mb-4">50 Mbps - غير محدودة</p>
+                                <div class="text-xl font-black text-white">$25 <span class="text-xs text-slate-400 font-normal">/ شهرياً</span></div>
+                            </div>
+                            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl relative">
+                                <button onclick="deletePackageCard(this)" class="absolute top-4 left-4 text-rose-400 hover:text-rose-300 p-1 bg-slate-950 rounded-lg"><i class="fa-solid fa-trash text-xs"></i></button>
+                                <h4 class="font-bold text-white text-base mb-1">المنزلية السريعة</h4>
+                                <p class="text-xs text-purple-400 font-mono mb-4">25 Mbps - 150GB</p>
+                                <div class="text-xl font-black text-white">$15 <span class="text-xs text-slate-400 font-normal">/ شهرياً</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. مواقع الأبراج (Map View) -->
+                <div id="tab-map-view" class="tab-content space-y-6">
+                    <div class="bg-slate-950 border border-slate-800 p-6 rounded-2xl">
+                        <h3 class="font-bold text-white text-lg mb-2">خريطة مواقع الأبراج ونقاط البث</h3>
+                        <p class="text-xs text-slate-400 mb-4">توزيع محطات الإنترنت اللاسلكي ضمن التغطية الجغرافية.</p>
+                        <div id="map"></div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal for Adding Subscriber -->
+    <div id="addSubscriberModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-slate-950 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl">
+            <h3 class="font-bold text-white text-lg mb-4">إضافة مشترك جديد للشبكة</h3>
+            <form id="addSubscriberForm" onsubmit="handleAddNewSubscriber(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">اسم المشترك الكامل</label>
+                    <input type="text" id="newSubName" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">رقم الهاتف</label>
+                    <input type="text" id="newSubPhone" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">الباقة</label>
+                    <input type="text" id="newSubPackage" required placeholder="مثال: الإحترافية (50M)" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="flex space-x-3 space-x-reverse pt-2">
+                    <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all">إضافة المشترك</button>
+                    <button type="button" onclick="closeAddSubscriberModal()" class="bg-slate-900 hover:bg-slate-800 text-slate-300 font-bold py-2.5 px-4 rounded-xl text-sm transition-all">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Adding Package -->
+    <div id="addPackageModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-slate-950 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl">
+            <h3 class="font-bold text-white text-lg mb-4">إضافة باقة جديدة</h3>
+            <form id="addPackageForm" onsubmit="handleAddNewPackage(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">اسم الباقة</label>
+                    <input type="text" id="newPkgName" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">السرعة / السعة</label>
+                    <input type="text" id="newPkgSpeed" required placeholder="مثال: 30 Mbps" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">السعر ($)</label>
+                    <input type="number" id="newPkgPrice" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="flex space-x-3 space-x-reverse pt-2">
+                    <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all">إضافة الباقة</button>
+                    <button type="button" onclick="closeAddPackageModal()" class="bg-slate-900 hover:bg-slate-800 text-slate-300 font-bold py-2.5 px-4 rounded-xl text-sm transition-all">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Adding Financial Row -->
+    <div id="addFinancialModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-slate-950 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl">
+            <h3 class="font-bold text-white text-lg mb-4">إضافة بند مالي جديد</h3>
+            <form id="addFinancialForm" onsubmit="handleAddNewFinancial(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">اسم البند أو المعاملة</label>
+                    <input type="text" id="finTitle" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">المبلغ ($)</label>
+                    <input type="number" id="finAmount" required step="0.01" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="flex space-x-3 space-x-reverse pt-2">
+                    <button type="submit" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all">حفظ وإضافة</button>
+                    <button type="button" onclick="closeAddFinancialModal()" class="bg-slate-900 hover:bg-slate-800 text-slate-300 font-bold py-2.5 px-4 rounded-xl text-sm transition-all">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast Box -->
+    <div id="toastNotification" class="fixed top-5 left-5 z-50 transform -translate-y-20 opacity-0 transition-all duration-300 bg-slate-950 border border-slate-800 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 space-x-reverse">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toastMessage" class="text-sm font-semibold">إشعار نظام سبيس نت</span>
+    </div>
+
+    <!-- Leaflet JS for Maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        let mapInitialized = false;
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('translate-x-full');
+        }
+
+        function switchTab(tabId, el) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Show selected tab
+            document.getElementById('tab-' + tabId).classList.add('active');
+
+            // Update active state in navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-600/20');
+                item.classList.add('text-slate-300', 'hover:bg-slate-900', 'hover:text-white');
+            });
+
+            if(el && el.classList) {
+                el.classList.add('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-600/20');
+                el.classList.remove('text-slate-300', 'hover:bg-slate-900', 'hover:text-white');
+            }
+
+            // Update title
+            const titles = {
+                'home': 'الرئيسية (لوحة التحكم)',
+                'subscribers': 'إدارة المشتركين',
+                'online': 'المشتركون المتصلون حالياً',
+                'offline': 'المشتركون المفصولون',
+                'finance': 'الحسابات والملخص المالي',
+                'tasks': 'تكليف الأبراج والفنيين',
+                'packages': 'اشتراكات العملاء والباقات',
+                'map-view': 'مواقع الأبراج الجغرافية'
+            };
+            document.getElementById('current-page-title').innerText = titles[tabId] || 'لوحة التحكم';
+
+            // Manage Floating Back Button visibility (Show if not on home tab)
+            const backBtn = document.getElementById('floatingBackBtn');
+            if (tabId !== 'home') {
+                backBtn.classList.remove('hidden');
+            } else {
+                backBtn.classList.add('hidden');
+            }
+
+            // Close mobile sidebar if open
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar.classList.contains('translate-x-full') && window.innerWidth < 1024) {
+                sidebar.classList.add('translate-x-full');
+            }
+
+            // Initialize map if map tab opened
+            if (tabId === 'map-view' && !mapInitialized) {
+                setTimeout(() => {
+                    const map = L.map('map').setView([34.7324, 36.7136], 13); // Homs coordinates center default
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        attribution: '© Space.net Maps'
+                    }).addTo(map);
+
+                    L.marker([34.7324, 36.7136]).addTo(map)
+                        .bindPopup('<b>برج الضاحية الرئيسي</b><br>متصل - إشارة ممتازة')
+                        .openPopup();
+                    
+                    L.marker([34.7450, 36.7000]).addTo(map)
+                        .bindPopup('<b>نقطة مزارع غرب المشتل 1</b><br>متصل');
+
+                    mapInitialized = true;
+                }, 200);
+            }
+        }
+
+        function goBackToHome() {
+            switchTab('home', document.querySelectorAll('.nav-item')[0]);
+        }
+
+        function showNotification(msg, type = 'success') {
+            const toast = document.getElementById('toastNotification');
+            const messageEl = document.getElementById('toastMessage');
+            const iconEl = document.getElementById('toastIcon');
+
+            messageEl.innerText = msg;
+            if(type === 'success') {
+                iconEl.className = "fa-solid fa-circle-check text-emerald-400 text-lg";
+            } else {
+                iconEl.className = "fa-solid fa-circle-info text-blue-400 text-lg";
+            }
+
+            toast.classList.remove('-translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('-translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Subscriber Dynamic Add / Delete
+        function openAddSubscriberModal() {
+            document.getElementById('addSubscriberModal').classList.remove('hidden');
+        }
+        function closeAddSubscriberModal() {
+            document.getElementById('addSubscriberModal').classList.add('hidden');
+        }
+        function handleAddNewSubscriber(e) {
+            e.preventDefault();
+            const name = document.getElementById('newSubName').value;
+            const phone = document.getElementById('newSubPhone').value;
+            const pkg = document.getElementById('newSubPackage').value;
+
+            const tbody = document.getElementById('subscribersListContainer');
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-slate-900/50 transition-all";
+            tr.innerHTML = `
+                <td class="p-4 font-bold text-white flex items-center space-x-3 space-x-reverse">
+                    <div class="w-8 h-8 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold text-xs">${name.substring(0,2)}</div>
+                    <span>${name}</span>
+                </td>
+                <td class="p-4 text-slate-400">${phone}</td>
+                <td class="p-4"><span class="bg-blue-500/10 text-blue-400 text-xs px-2.5 py-1 rounded-lg">${pkg}</span></td>
+                <td class="p-4">برج الضاحية الرئيسي</td>
+                <td class="p-4 text-slate-400">2026/11/04</td>
+                <td class="p-4"><span class="bg-emerald-500/20 text-emerald-400 text-xs px-2.5 py-1 rounded-lg">متصل</span></td>
+                <td class="p-4 text-center space-x-2 space-x-reverse">
+                    <button onclick="showNotification('تم عرض تفاصيل المشترك', 'info')" class="text-blue-400 hover:text-blue-300 p-1.5 bg-slate-900 rounded-lg"><i class="fa-solid fa-eye"></i></button>
+                    <button onclick="deleteSubscriberRow(this)" class="text-rose-400 hover:text-rose-300 p-1.5 bg-slate-900 rounded-lg" title="حذف المشترك"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+            closeAddSubscriberModal();
+            document.getElementById('addSubscriberForm').reset();
+            showNotification('تم إضافة المشترك بنجاح', 'success');
+        }
+        function deleteSubscriberRow(btn) {
+            const row = btn.closest('tr');
+            row.remove();
+            showNotification('تم حذف المشترك بنجاح', 'info');
+        }
+
+        // Package Dynamic Add / Delete
+        function openAddPackageModal() {
+            document.getElementById('addPackageModal').classList.remove('hidden');
+        }
+        function closeAddPackageModal() {
+            document.getElementById('addPackageModal').classList.add('hidden');
+        }
+        function handleAddNewPackage(e) {
+            e.preventDefault();
+            const name = document.getElementById('newPkgName').value;
+            const speed = document.getElementById('newPkgSpeed').value;
+            const price = document.getElementById('newPkgPrice').value;
+
+            const grid = document.getElementById('packagesGridContainer');
+            const card = document.createElement('div');
+            card.className = "bg-slate-900 border border-slate-800 p-5 rounded-2xl relative";
+            card.innerHTML = `
+                <button onclick="deletePackageCard(this)" class="absolute top-4 left-4 text-rose-400 hover:text-rose-300 p-1 bg-slate-950 rounded-lg"><i class="fa-solid fa-trash text-xs"></i></button>
+                <h4 class="font-bold text-white text-base mb-1">${name}</h4>
+                <p class="text-xs text-blue-400 font-mono mb-4">${speed}</p>
+                <div class="text-xl font-black text-white">$${price} <span class="text-xs text-slate-400 font-normal">/ شهرياً</span></div>
+            `;
+            grid.appendChild(card);
+            closeAddPackageModal();
+            document.getElementById('addPackageForm').reset();
+            showNotification('تم إضافة الباقة الجديدة بنجاح', 'success');
+        }
+        function deletePackageCard(btn) {
+            btn.closest('div').remove();
+            showNotification('تم حذف الباقة بنجاح', 'info');
+        }
+
+        // Financial Summary Automated Calculation & Add/Delete
+        function addFinancialRow() {
+            document.getElementById('addFinancialModal').classList.remove('hidden');
+        }
+        function closeAddFinancialModal() {
+            document.getElementById('addFinancialModal').classList.add('hidden');
+        }
+        function handleAddNewFinancial(e) {
+            e.preventDefault();
+            const title = document.getElementById('finTitle').value;
+            const amount = parseFloat(document.getElementById('finAmount').value);
+
+            const tbody = document.getElementById('financialListContainer');
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-slate-900/50";
+            tr.innerHTML = `
+                <td class="p-3 font-medium text-white">${title}</td>
+                <td class="p-3"><span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-xs font-bold">وارد</span></td>
+                <td class="p-3 font-mono font-bold text-emerald-400 amount-cell">${amount.toFixed(2)}</td>
+                <td class="p-3 text-slate-400 text-xs">2026/10/04</td>
+                <td class="p-3 text-center">
+                    <button onclick="deleteFinancialRow(this)" class="text-rose-400 hover:text-rose-300 p-1.5 bg-slate-900 rounded-lg"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+            closeAddFinancialModal();
+            document.getElementById('addFinancialForm').reset();
+            calculateFinancialTotal();
+            showNotification('تم إضافة المعامل المالية وحساب المجموع تلقائياً', 'success');
+        }
+        function deleteFinancialRow(btn) {
+            btn.closest('tr').remove();
+            calculateFinancialTotal();
+            showNotification('تم حذف البند المالي وتحديث الإجمالي', 'info');
+        }
+        function calculateFinancialTotal() {
+            const amountCells = document.querySelectorAll('.amount-cell');
+            let sum = 0;
+            amountCells.forEach(cell => {
+                sum += parseFloat(cell.innerText) || 0;
+            });
+            document.getElementById('totalFinancialSum').innerText = '$' + sum.toFixed(2);
+        }
+
+        function filterSubscribers() {
+            const query = document.getElementById('subSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#subscribersListContainer tr');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
