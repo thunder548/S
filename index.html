@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سبيس نت | SpaceNet</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <!-- ✅ مكتبة SheetJS لإنشاء ملفات Excel -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <style>
         :root {
@@ -29,34 +28,24 @@
             --pie-hole: #0d2347;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; }
 
         body {
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 16px;
-            padding-bottom: 90px;
+            background: var(--bg-gradient); background-attachment: fixed;
+            color: var(--text-main); min-height: 100vh;
+            display: flex; flex-direction: column;
+            padding: 16px; padding-bottom: 90px;
             transition: background 0.3s, color 0.3s;
         }
 
         .container { max-width: 1200px; margin: 0 auto; width: 100%; flex: 1; }
 
         .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
+            background: var(--glass-bg); backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            box-shadow: var(--glass-shadow);
+            border-radius: 16px; box-shadow: var(--glass-shadow);
         }
 
         header { text-align: center; padding: 12px 0 20px 0; }
@@ -65,58 +54,39 @@
         .brand-icon {
             width: 40px; height: 40px;
             background: linear-gradient(135deg, #0284c7, #38bdf8);
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
             font-size: 20px; font-weight: bold;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
-            flex-shrink: 0;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); flex-shrink: 0;
         }
 
         .brand-title {
             font-size: 1.8rem; font-weight: 800; letter-spacing: 1px;
             background: linear-gradient(to right, #ffffff, #93c5fd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
 
         .toolbar {
             display: flex; justify-content: space-between; align-items: center;
             gap: 10px; margin-bottom: 12px; flex-wrap: wrap;
         }
-        .section-title {
-            font-size: 1.3rem; color: #93c5fd;
-            display: flex; align-items: center; gap: 8px;
-        }
+        .section-title { font-size: 1.3rem; color: #93c5fd; display: flex; align-items: center; gap: 8px; }
         .toolbar-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 
         .icon-btn {
-            width: 38px; height: 38px;
-            border-radius: 10px;
-            border: 1px solid var(--glass-border);
-            background: var(--glass-bg);
-            font-size: 1.05rem;
-            cursor: pointer;
+            width: 38px; height: 38px; border-radius: 10px;
+            border: 1px solid var(--glass-border); background: var(--glass-bg);
+            font-size: 1.05rem; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            transition: all 0.2s;
-            color: var(--text-main);
+            transition: all 0.2s; color: var(--text-main);
         }
         .icon-btn:hover { background: var(--card-hover); transform: translateY(-1px); }
-        /* ✅ الزر عندما يكون ملف Excel مرتبط */
-        .icon-btn.linked {
-            border-color: var(--accent-green);
-            background: rgba(16, 185, 129, 0.2);
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
-        }
+        .icon-btn.linked { border-color: var(--accent-green); background: rgba(16, 185, 129, 0.2); box-shadow: 0 0 10px rgba(16, 185, 129, 0.4); }
 
         .export-btn {
-            padding: 9px 14px;
-            border-radius: 10px;
+            padding: 9px 14px; border-radius: 10px;
             border: 1px solid var(--accent-blue);
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--accent-blue);
-            font-weight: bold; font-size: 0.85rem;
-            cursor: pointer;
+            background: rgba(56, 189, 248, 0.15); color: var(--accent-blue);
+            font-weight: bold; font-size: 0.85rem; cursor: pointer;
             display: flex; align-items: center; gap: 6px;
             transition: all 0.2s; font-family: inherit; white-space: nowrap;
         }
@@ -124,8 +94,7 @@
         .export-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
         .stats-banner {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 12px; padding: 16px; margin-bottom: 16px;
         }
         .stat-box {
@@ -149,21 +118,16 @@
 
         .search-bar { position: relative; margin-bottom: 16px; }
         .search-input {
-            width: 100%; padding: 12px 44px 12px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--glass-border);
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            color: var(--text-main);
-            font-size: 0.95rem; font-family: inherit;
+            width: 100%; padding: 12px 44px 12px 16px; border-radius: 12px;
+            border: 1px solid var(--glass-border); background: var(--glass-bg);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            color: var(--text-main); font-size: 0.95rem; font-family: inherit;
             outline: none; transition: all 0.2s;
         }
         .search-input:focus { border-color: var(--accent-blue); background: rgba(56, 189, 248, 0.08); }
         .search-input::placeholder { color: var(--text-muted); }
         .search-icon {
-            position: absolute; right: 14px; top: 50%;
-            transform: translateY(-50%);
+            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
             color: var(--text-muted); pointer-events: none; font-size: 1rem;
         }
 
@@ -175,25 +139,21 @@
         @media (max-width: 600px) { .chart-content { grid-template-columns: 1fr; gap: 16px; } }
         .pie-wrapper { display: flex; align-items: center; gap: 16px; }
         .pie-chart {
-            width: 100px; height: 100px; border-radius: 50%;
-            position: relative; flex-shrink: 0;
+            width: 100px; height: 100px; border-radius: 50%; position: relative;
+            flex-shrink: 0;
             background: conic-gradient(#10b981 0% 50%, #ef4444 50% 100%);
             transition: background 0.4s;
         }
         .pie-chart::after {
             content: ''; position: absolute; inset: 24px;
-            background: var(--pie-hole); border-radius: 50%;
-            transition: background 0.3s;
+            background: var(--pie-hole); border-radius: 50%; transition: background 0.3s;
         }
         .pie-legend { display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem; }
         .legend-item { display: flex; align-items: center; gap: 6px; }
         .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
         .bars-wrapper { display: flex; flex-direction: column; gap: 14px; }
         .bar-row { display: flex; flex-direction: column; gap: 6px; }
-        .bar-label {
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 0.85rem; font-weight: 600; gap: 10px;
-        }
+        .bar-label { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 600; gap: 10px; }
         .bar-label small { font-size: 0.78rem; color: var(--text-muted); font-weight: normal; }
         .bar-track { height: 10px; background: rgba(239, 68, 68, 0.22); border-radius: 6px; overflow: hidden; }
         .bar-fill { height: 100%; border-radius: 6px; transition: width 0.5s ease; width: 0%; }
@@ -204,15 +164,12 @@
         @media (max-width: 768px) { .lists-grid { grid-template-columns: 1fr; gap: 12px; } }
         .list-section { padding: 16px; min-height: 260px; }
         .section-header {
-            font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;
-            padding-bottom: 8px; border-bottom: 1px solid var(--glass-border);
+            font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 1px solid var(--glass-border);
             display: flex; justify-content: space-between; align-items: center; gap: 8px;
         }
         .section-header.red { color: #f87171; border-bottom-color: var(--accent-red-border); }
-        .badge {
-            font-size: 0.75rem; padding: 3px 9px; border-radius: 20px;
-            background: rgba(255, 255, 255, 0.1); flex-shrink: 0;
-        }
+        .badge { font-size: 0.75rem; padding: 3px 9px; border-radius: 20px; background: rgba(255, 255, 255, 0.1); flex-shrink: 0; }
         .badge.red { background: rgba(239, 68, 68, 0.2); color: #f87171; }
         .subscribers-list { display: flex; flex-direction: column; gap: 8px; }
 
@@ -224,21 +181,44 @@
             display: flex; justify-content: space-between; align-items: center; gap: 8px;
         }
         .subscriber-card:hover { background: rgba(16, 185, 129, 0.15); transform: translateY(-2px); }
-        .subscriber-card.disconnected {
-            border-color: var(--accent-red-border);
-            background: rgba(239, 68, 68, 0.05);
-        }
+        .subscriber-card.disconnected { border-color: var(--accent-red-border); background: rgba(239, 68, 68, 0.05); }
         .subscriber-card.disconnected:hover { background: rgba(239, 68, 68, 0.15); }
+        .subscriber-card.expiring { border-color: var(--accent-orange-border); background: rgba(245, 158, 11, 0.06); }
+        .subscriber-card.expiring:hover { background: rgba(245, 158, 11, 0.15); }
 
         .sub-info { min-width: 0; flex: 1; }
+
+        /* ✅ الاسم + شارة الأيام المتبقية في سطر واحد */
         .sub-info h4 {
-            font-size: 0.95rem; margin-bottom: 3px;
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            font-size: 0.95rem;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow: visible;
+            text-overflow: clip;
+            white-space: normal;
         }
-        .sub-info p {
-            font-size: 0.8rem; color: var(--text-muted);
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        .sub-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 0;
+            flex-shrink: 1;
         }
+        .days-badge {
+            font-size: 0.68rem;
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-weight: 700;
+            flex-shrink: 0;
+            line-height: 1.4;
+            white-space: nowrap;
+            letter-spacing: 0;
+        }
+
+        .sub-info p { font-size: 0.8rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
         .sub-details-right { text-align: left; flex-shrink: 0; }
         .sub-price { font-weight: bold; font-size: 0.9rem; color: var(--accent-green); }
         .sub-speed { font-size: 0.75rem; color: var(--accent-blue); }
@@ -266,34 +246,22 @@
             transition: opacity 0.3s ease; padding: 12px;
         }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
-        .modal {
-            width: 100%; max-width: 420px; padding: 20px;
-            border-radius: 18px; position: relative;
-            max-height: 90vh; overflow-y: auto;
-        }
-        .modal-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 16px; gap: 10px;
-        }
+        .modal { width: 100%; max-width: 420px; padding: 20px; border-radius: 18px; position: relative; max-height: 90vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 10px; }
         .modal-header h3 { font-size: 1.05rem; }
-        .close-btn {
-            background: none; border: none; color: var(--text-muted);
-            font-size: 20px; cursor: pointer; line-height: 1; flex-shrink: 0;
-        }
+        .close-btn { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; line-height: 1; flex-shrink: 0; }
 
         .form-group { margin-bottom: 12px; }
-        .form-group label {
-            display: block; margin-bottom: 5px;
-            font-size: 0.8rem; color: var(--text-muted);
-        }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 0.8rem; color: var(--text-muted); }
         .form-control {
             width: 100%; padding: 9px 12px; border-radius: 8px;
-            border: 1px solid var(--glass-border);
-            background: rgba(0, 0, 0, 0.2); color: white;
-            font-size: 0.9rem; outline: none; transition: all 0.2s;
+            border: 1px solid var(--glass-border); background: rgba(0, 0, 0, 0.2);
+            color: white; font-size: 0.9rem; outline: none; transition: all 0.2s;
         }
         .form-control:focus { border-color: var(--accent-blue); }
         select.form-control option { background: #102a52; color: white; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .form-control:read-only { background: rgba(0,0,0,0.4); cursor: not-allowed; }
 
         .btn-submit {
             width: 100%; padding: 11px; border-radius: 10px; border: none;
@@ -304,49 +272,30 @@
 
         #login-overlay { z-index: 2000; }
         .login-modal { max-width: 380px; }
-        .login-hint {
-            text-align: center; font-size: 0.75rem;
-            color: var(--text-muted); margin-top: 12px;
-        }
-        .login-error {
-            color: #f87171; font-size: 0.85rem; text-align: center;
-            min-height: 1.2rem; margin: 8px 0;
-        }
+        .login-hint { text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 12px; }
+        .login-error { color: #f87171; font-size: 0.85rem; text-align: center; min-height: 1.2rem; margin: 8px 0; }
 
-        footer {
-            text-align: center; padding: 16px;
-            font-size: 0.85rem; color: var(--text-muted); margin-top: auto;
-        }
+        footer { text-align: center; padding: 16px; font-size: 0.85rem; color: var(--text-muted); margin-top: auto; }
         .thunder-icon { color: #f59e0b; display: inline-block; animation: pulse 1.5s infinite; }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
-        .detail-row {
-            display: flex; justify-content: space-between;
-            padding: 9px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            gap: 10px; font-size: 0.9rem;
-        }
+        .detail-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); gap: 10px; font-size: 0.9rem; }
         .detail-row span:last-child { text-align: left; word-break: break-word; }
         .detail-label { color: var(--text-muted); flex-shrink: 0; }
 
-        /* ✅ Toast إشعارات */
         .toast {
             position: fixed; bottom: 90px; left: 20px;
             padding: 12px 18px; border-radius: 10px;
-            background: #1e3a6e; color: white;
-            font-size: 0.88rem;
+            background: #1e3a6e; color: white; font-size: 0.88rem;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
             opacity: 0; transform: translateY(10px);
             transition: all 0.3s; z-index: 3000;
-            max-width: 320px;
-            border: 1px solid #38bdf8;
+            max-width: 320px; border: 1px solid #38bdf8;
         }
         .toast.show { opacity: 1; transform: translateY(0); }
         .toast.toast-success { background: #065f46; border-color: #10b981; }
         .toast.toast-error { background: #7f1d1d; border-color: #ef4444; }
+        .toast.toast-warning { background: #78350f; border-color: #f59e0b; }
 
         @media (max-width: 600px) {
             .stats-banner { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 12px; }
@@ -369,6 +318,7 @@
             .subscriber-card { padding: 9px 12px; }
             .sub-info h4 { font-size: 0.9rem; }
             .sub-info p { font-size: 0.75rem; }
+            .days-badge { font-size: 0.62rem; padding: 1px 6px; }
             .sub-price { font-size: 0.85rem; }
             .sub-speed { font-size: 0.7rem; }
             .fab { width: 50px; height: 50px; font-size: 24px; bottom: 18px; left: 18px; }
@@ -382,6 +332,7 @@
             .pie-chart::after { inset: 20px; }
             .chart-content { gap: 12px; }
             .search-input { padding: 10px 40px 10px 12px; font-size: 0.9rem; }
+            .form-row { grid-template-columns: 1fr; }
         }
         @media (max-width: 360px) {
             .stats-banner { gap: 8px; padding: 10px; }
@@ -395,6 +346,7 @@
             .icon-btn { width: 30px; height: 30px; font-size: 0.85rem; }
             .sub-info h4 { font-size: 0.85rem; }
             .sub-info p { font-size: 0.7rem; }
+            .days-badge { font-size: 0.58rem; padding: 1px 5px; }
             .sub-price { font-size: 0.8rem; }
             .sub-speed { font-size: 0.65rem; }
             .section-header { font-size: 0.92rem; }
@@ -406,19 +358,11 @@
             --glass-bg: rgba(255, 255, 255, 0.75);
             --glass-border: rgba(0, 0, 0, 0.08);
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.06);
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --card-hover: rgba(0, 0, 0, 0.04);
-            --pie-hole: #f8fafc;
-            background: var(--bg-gradient);
-            color: var(--text-main);
+            --text-main: #1e293b; --text-muted: #64748b;
+            --card-hover: rgba(0, 0, 0, 0.04); --pie-hole: #f8fafc;
+            background: var(--bg-gradient); color: var(--text-main);
         }
-        body.light-mode .brand-title {
-            background: linear-gradient(to right, #0f172a, #0284c7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        body.light-mode .brand-title { background: linear-gradient(to right, #0f172a, #0284c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         body.light-mode .section-title { color: #0369a1; }
         body.light-mode .stat-box { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.06); }
         body.light-mode .stat-box.green { background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.4); }
@@ -434,11 +378,14 @@
         body.light-mode .subscriber-card:hover { background: rgba(16,185,129,0.15); }
         body.light-mode .subscriber-card.disconnected { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.35); }
         body.light-mode .subscriber-card.disconnected:hover { background: rgba(239,68,68,0.15); }
+        body.light-mode .subscriber-card.expiring { background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.4); }
+        body.light-mode .subscriber-card.expiring:hover { background: rgba(245,158,11,0.15); }
         body.light-mode .sub-info p { color: #64748b; }
         body.light-mode .sub-price { color: #059669; }
         body.light-mode .subscriber-card.disconnected .sub-price { color: #dc2626; }
         body.light-mode .sub-speed { color: #0284c7; }
         body.light-mode .form-control { background: rgba(255,255,255,0.8); color: #1e293b; border-color: rgba(0,0,0,0.15); }
+        body.light-mode .form-control:read-only { background: rgba(0,0,0,0.06); }
         body.light-mode select.form-control option { background: #ffffff; color: #1e293b; }
         body.light-mode .detail-row { border-bottom-color: rgba(0,0,0,0.08); }
         body.light-mode .modal-overlay { background: rgba(0,0,0,0.3); }
@@ -455,24 +402,10 @@
             background: linear-gradient(135deg, #0b1d3a 0%, #102a52 40%, #1a3a68 70%, #0d2347 100%) !important;
             padding: 20px !important; border-radius: 0 !important; color: #ffffff !important;
         }
-        .pdf-export-mode .glass-card {
-            background: #16305a !important; backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            border: 1px solid rgba(255,255,255,0.25) !important; box-shadow: none !important;
-        }
+        .pdf-export-mode .glass-card { background: #16305a !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border: 1px solid rgba(255,255,255,0.25) !important; box-shadow: none !important; }
         .pdf-export-mode .section-title { color: #93c5fd !important; }
-        .pdf-export-mode .export-btn,
-        .pdf-export-mode .icon-btn,
-        .pdf-export-mode .fab,
-        .pdf-export-mode .search-bar,
-        .pdf-export-mode .chart-section { display: none !important; }
-        .pdf-export-mode .brand-title {
-            background: none !important;
-            -webkit-background-clip: initial !important;
-            background-clip: initial !important;
-            -webkit-text-fill-color: #ffffff !important;
-            color: #ffffff !important;
-        }
+        .pdf-export-mode .export-btn, .pdf-export-mode .icon-btn, .pdf-export-mode .fab, .pdf-export-mode .search-bar, .pdf-export-mode .chart-section { display: none !important; }
+        .pdf-export-mode .brand-title { background: none !important; -webkit-background-clip: initial !important; background-clip: initial !important; -webkit-text-fill-color: #ffffff !important; color: #ffffff !important; }
         .pdf-export-mode .stat-box { background: #1e3a6e !important; border: 1px solid rgba(255,255,255,0.2) !important; }
         .pdf-export-mode .stat-box.green { background: #064e3b !important; border-color: #10b981 !important; }
         .pdf-export-mode .stat-box.red { background: #7f1d1d !important; border-color: #ef4444 !important; }
@@ -487,10 +420,12 @@
         .pdf-export-mode .stat-box.orange .stat-value { color: #fbbf24 !important; }
         .pdf-export-mode .subscriber-card { background: #064e3b !important; border: 1px solid #10b981 !important; }
         .pdf-export-mode .subscriber-card.disconnected { background: #7f1d1d !important; border: 1px solid #ef4444 !important; }
+        .pdf-export-mode .subscriber-card.expiring { background: #78350f !important; border: 1px solid #f59e0b !important; }
         .pdf-export-mode .sub-price { color: #34d399 !important; }
         .pdf-export-mode .subscriber-card.disconnected .sub-price { color: #f87171 !important; }
         .pdf-export-mode .sub-speed { color: #38bdf8 !important; }
         .pdf-export-mode .sub-info p { color: #cbd5e1 !important; }
+        .pdf-export-mode .days-badge { background: rgba(255,255,255,0.15) !important; color: #ffffff !important; }
         .pdf-export-mode .section-header { color: #ffffff !important; border-bottom-color: rgba(255,255,255,0.25) !important; }
         .pdf-export-mode .section-header.red { color: #f87171 !important; }
         .pdf-export-mode .badge { background: #1e3a6e !important; color: #ffffff !important; }
@@ -514,7 +449,7 @@
                 </div>
                 <p class="login-error" id="login-error"></p>
                 <button type="submit" class="btn-submit">دخول</button>
-               
+                <p class="login-hint">الافتراضي: <code>admin</code> / <code>1234</code></p>
             </form>
         </div>
     </div>
@@ -530,9 +465,7 @@
         <div class="toolbar">
             <h2 class="section-title">📊 لوحة تحكم حسابات الشركة</h2>
             <div class="toolbar-actions">
-                <!-- ✅ ربط ملف Excel للتحديث التلقائي -->
                 <button class="icon-btn" id="excel-link-btn" onclick="linkExcelFile()" title="ربط ملف Excel للتحديث التلقائي">📊</button>
-                <!-- ✅ تحميل نسخة Excel الآن -->
                 <button class="icon-btn" onclick="downloadExcel()" title="تحميل نسخة Excel">💾</button>
                 <button class="icon-btn" onclick="toggleTheme()" id="theme-btn" title="تغيير الوضع">☀️</button>
                 <button class="export-btn" onclick="exportPDF(event)">📄 PDF</button>
@@ -569,9 +502,7 @@
 
         <div class="search-bar">
             <span class="search-icon">🔍</span>
-            <input type="text" class="search-input" id="search-input"
-                   placeholder="ابحث بالاسم أو رقم الهاتف..."
-                   oninput="handleSearch(event)">
+            <input type="text" class="search-input" id="search-input" placeholder="ابحث بالاسم أو رقم الهاتف..." oninput="handleSearch(event)">
         </div>
 
         <div class="glass-card chart-section">
@@ -580,29 +511,17 @@
                 <div class="pie-wrapper">
                     <div class="pie-chart" id="pie-chart"></div>
                     <div class="pie-legend">
-                        <div class="legend-item">
-                            <span class="dot" style="background:#10b981"></span>
-                            متصل: <strong id="legend-connected">0</strong>
-                        </div>
-                        <div class="legend-item">
-                            <span class="dot" style="background:#ef4444"></span>
-                            مقطوع: <strong id="legend-disconnected">0</strong>
-                        </div>
+                        <div class="legend-item"><span class="dot" style="background:#10b981"></span>متصل: <strong id="legend-connected">0</strong></div>
+                        <div class="legend-item"><span class="dot" style="background:#ef4444"></span>مقطوع: <strong id="legend-disconnected">0</strong></div>
                     </div>
                 </div>
                 <div class="bars-wrapper">
                     <div class="bar-row">
-                        <div class="bar-label">
-                            <span>💵 الدولار</span>
-                            <small id="bar-usd-val">$0 / $0</small>
-                        </div>
+                        <div class="bar-label"><span>💵 الدولار</span><small id="bar-usd-val">$0 / $0</small></div>
                         <div class="bar-track"><div class="bar-fill blue" id="bar-usd-paid"></div></div>
                     </div>
                     <div class="bar-row">
-                        <div class="bar-label">
-                            <span>💴 الليرة السورية</span>
-                            <small id="bar-syp-val">0 / 0 ل.س</small>
-                        </div>
+                        <div class="bar-label"><span>💴 الليرة السورية</span><small id="bar-syp-val">0 / 0 ل.س</small></div>
                         <div class="bar-track"><div class="bar-fill orange" id="bar-syp-paid"></div></div>
                     </div>
                 </div>
@@ -629,7 +548,6 @@
 
     <button class="fab" onclick="openAddModal()">+</button>
 
-    <!-- Modal: إضافة/تعديل -->
     <div class="modal-overlay" id="add-modal">
         <div class="glass-card modal">
             <div class="modal-header">
@@ -651,28 +569,49 @@
                 </div>
                 <div class="form-group">
                     <label>قيمة الدفع المستحق</label>
-                    <input type="number" class="form-control" id="amount" required>
+                    <input type="number" class="form-control" id="amount" required min="0" step="any">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نوع العملة</label>
+                        <select class="form-control" id="currency">
+                            <option value="USD">دولار ($)</option>
+                            <option value="SYP">ليرة سورية (ل.س)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>حالة الاتصال</label>
+                        <select class="form-control" id="status">
+                            <option value="connected">متصل</option>
+                            <option value="disconnected">مقطوع</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>تاريخ بدء الاشتراك</label>
+                        <input type="date" class="form-control" id="start-date">
+                    </div>
+                    <div class="form-group">
+                        <label>مدة الاشتراك</label>
+                        <select class="form-control" id="duration">
+                            <option value="1">شهر واحد</option>
+                            <option value="2">شهران</option>
+                            <option value="3">3 أشهر</option>
+                            <option value="6">6 أشهر</option>
+                            <option value="12">سنة كاملة</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label>نوع العملة</label>
-                    <select class="form-control" id="currency">
-                        <option value="USD">دولار ($)</option>
-                        <option value="SYP">ليرة سورية (ل.س)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>حالة الاتصال</label>
-                    <select class="form-control" id="status">
-                        <option value="connected">متصل</option>
-                        <option value="disconnected">مقطوع</option>
-                    </select>
+                    <label>تاريخ الانتهاء (يُحسب تلقائياً)</label>
+                    <input type="date" class="form-control" id="expiry-date" readonly>
                 </div>
                 <button type="submit" class="btn-submit" id="add-submit-btn">حفظ المشترك</button>
             </form>
         </div>
     </div>
 
-    <!-- Modal: تفاصيل -->
     <div class="modal-overlay" id="details-modal">
         <div class="glass-card modal">
             <div class="modal-header">
@@ -696,6 +635,7 @@
         const DB_STORE = 'handles';
         const LOGIN_USER = 'admin';
         const LOGIN_PASS = '1234';
+        const EXPIRY_CHECK_INTERVAL = 60 * 1000;
 
         const DEFAULT_SUBSCRIBERS = [
             { id: 1, name: "أحمد محمد العلي", phone: "0912345678", speed: "8 ميجا", amount: 15, currency: "USD", status: "connected" },
@@ -710,7 +650,7 @@
         let editingId = null;
         let excelFileHandle = null;
 
-        /* ================== أدوات ================== */
+        /* ================== أدوات عامة ================== */
         function escapeHTML(str) {
             const div = document.createElement('div');
             div.textContent = String(str);
@@ -742,10 +682,76 @@
             setTimeout(() => {
                 t.classList.remove('show');
                 setTimeout(() => t.remove(), 300);
-            }, 2200);
+            }, 2500);
         }
 
-        /* ================== IndexedDB لحفظ مرجع ملف Excel ================== */
+        /* ================== 📅 دوال التاريخ ================== */
+        function todayISO() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        }
+
+        function addMonths(dateStr, months) {
+            const [y, m, d] = dateStr.split('-').map(Number);
+            const target = new Date(y, m - 1 + months, 1);
+            const lastDay = new Date(target.getFullYear(), target.getMonth() + 1, 0).getDate();
+            target.setDate(Math.min(d, lastDay));
+            return `${target.getFullYear()}-${String(target.getMonth()+1).padStart(2,'0')}-${String(target.getDate()).padStart(2,'0')}`;
+        }
+
+        function daysRemaining(sub) {
+            if (!sub.expiryDate) return null;
+            const today = new Date(); today.setHours(0,0,0,0);
+            const exp = new Date(sub.expiryDate + 'T00:00:00');
+            return Math.ceil((exp - today) / (1000 * 60 * 60 * 24));
+        }
+
+        function isExpired(sub) {
+            const rem = daysRemaining(sub);
+            return rem !== null && rem < 0;
+        }
+
+        /* ✅ شارة الأيام المتبقية بجانب الاسم */
+        function daysBadgeInline(sub) {
+            if (!sub.expiryDate) return '';
+            const rem = daysRemaining(sub);
+            if (rem < 0) {
+                return `<span class="days-badge" style="background:rgba(239,68,68,0.25);color:#f87171">⛔ ${Math.abs(rem)}ي</span>`;
+            }
+            if (rem === 0) {
+                return `<span class="days-badge" style="background:rgba(245,158,11,0.3);color:#f59e0b">⏰ اليوم</span>`;
+            }
+            if (rem <= 3) {
+                return `<span class="days-badge" style="background:rgba(245,158,11,0.3);color:#f59e0b">⏰ ${rem}ي</span>`;
+            }
+            return `<span class="days-badge" style="background:rgba(16,185,129,0.25);color:#10b981">📅 ${rem}ي</span>`;
+        }
+
+        /* ================== 🔴 الفحص التلقائي للانتهاء ================== */
+        async function checkExpirations() {
+            let changed = false;
+            const expiredNames = [];
+
+            subscribers.forEach(sub => {
+                if (sub.status === 'connected' && isExpired(sub)) {
+                    sub.status = 'disconnected';
+                    changed = true;
+                    expiredNames.push(sub.name);
+                }
+            });
+
+            if (changed) {
+                saveSubscribers();
+                render();
+                await autoSaveExcel();
+                const msg = expiredNames.length === 1
+                    ? `⛔ تم قطع اتصال: ${expiredNames[0]} (انتهى اشتراكه)`
+                    : `⛔ تم قطع اتصال ${expiredNames.length} مشتركين (انتهت اشتراكاتهم)`;
+                showToast(msg, 'warning');
+            }
+        }
+
+        /* ================== IndexedDB لمرجع Excel ================== */
         function openDB() {
             return new Promise((resolve, reject) => {
                 const req = indexedDB.open(DB_NAME, 1);
@@ -754,7 +760,6 @@
                 req.onerror = () => reject(req.error);
             });
         }
-
         async function saveHandleToDB(handle) {
             try {
                 const db = await openDB();
@@ -766,7 +771,6 @@
                 });
             } catch (e) { console.warn('IndexedDB save failed:', e); }
         }
-
         async function loadHandleFromDB() {
             try {
                 const db = await openDB();
@@ -779,17 +783,6 @@
             } catch (e) { return null; }
         }
 
-        async function clearHandleFromDB() {
-            try {
-                const db = await openDB();
-                await new Promise((resolve) => {
-                    const tx = db.transaction(DB_STORE, 'readwrite');
-                    tx.objectStore(DB_STORE).delete('excel');
-                    tx.oncomplete = resolve;
-                });
-            } catch (e) {}
-        }
-
         /* ================== Excel ================== */
         function buildWorkbook() {
             const rows = subscribers.map((s, i) => ({
@@ -799,13 +792,16 @@
                 'السرعة': s.speed,
                 'المبلغ': s.amount,
                 'العملة': s.currency === 'USD' ? 'دولار ($)' : 'ليرة سورية (ل.س)',
-                'حالة الاتصال': s.status === 'connected' ? 'متصل' : 'مقطوع'
+                'حالة الاتصال': s.status === 'connected' ? 'متصل' : 'مقطوع',
+                'تاريخ البدء': s.startDate || '—',
+                'تاريخ الانتهاء': s.expiryDate || '—',
+                'المدة (أشهر)': s.durationMonths || '—',
+                'المتبقي (أيام)': s.expiryDate ? daysRemaining(s) : '—'
             }));
-
             const ws = XLSX.utils.json_to_sheet(rows);
             ws['!cols'] = [
-                { wch: 5 }, { wch: 25 }, { wch: 15 },
-                { wch: 10 }, { wch: 12 }, { wch: 18 }, { wch: 12 }
+                { wch: 5 }, { wch: 25 }, { wch: 15 }, { wch: 10 }, { wch: 12 },
+                { wch: 18 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }
             ];
             const wb = XLSX.utils.book_new();
             wb.Workbook = { Views: [{ RTL: true }] };
@@ -816,62 +812,52 @@
         async function writeToExcelFile() {
             if (!excelFileHandle) return false;
             try {
-                // التحقق من الصلاحية
                 if (excelFileHandle.queryPermission) {
                     let perm = await excelFileHandle.queryPermission({ mode: 'readwrite' });
                     if (perm !== 'granted') {
                         perm = await excelFileHandle.requestPermission({ mode: 'readwrite' });
-                        if (perm !== 'granted') {
-                            console.warn('صلاحية الكتابة مرفوضة');
-                            return false;
-                        }
+                        if (perm !== 'granted') return false;
                     }
                 }
-
                 const wb = buildWorkbook();
                 const data = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
                 const writable = await excelFileHandle.createWritable();
                 await writable.write(data);
                 await writable.close();
                 return true;
-            } catch (e) {
-                console.error('Excel write failed:', e);
-                return false;
-            }
+            } catch (e) { console.error('Excel write failed:', e); return false; }
         }
 
         async function autoSaveExcel() {
             if (!excelFileHandle) return;
             const ok = await writeToExcelFile();
             if (ok) showToast('✅ تم تحديث ملف Excel', 'success');
-            else showToast('⚠️ تعذّر تحديث Excel - أعد الربط', 'error');
         }
 
         async function linkExcelFile() {
-            if (!('showSaveFilePicker' in window)) {
-                showToast('⚠️ متصفحك لا يدعم الحفظ التلقائي. استخدم زر 💾', 'error');
+            if (!window.isSecureContext) {
+                alert('⚠️ الصفحة غير آمنة (file://)\n\nافتح الصفحة عبر سيرفر محلي أو استخدم زر 💾');
+                return;
+            }
+            if (typeof window.showSaveFilePicker !== 'function') {
+                alert('⚠️ المتصفح لا يدعم الحفظ التلقائي\n\nاستخدم Chrome أو Edge، أو زر 💾');
                 return;
             }
             try {
                 excelFileHandle = await window.showSaveFilePicker({
                     suggestedName: 'SpaceNet-Subscribers.xlsx',
-                    types: [{
-                        description: 'Excel Workbook',
-                        accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] }
-                    }]
+                    types: [{ description: 'Excel Workbook', accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] } }]
                 });
                 await saveHandleToDB(excelFileHandle);
                 const ok = await writeToExcelFile();
                 if (ok) {
                     document.getElementById('excel-link-btn').classList.add('linked');
                     showToast('✅ تم ربط الملف - سيُحدَّث تلقائياً', 'success');
-                } else {
-                    showToast('⚠️ تم الربط لكن فشلت الكتابة', 'error');
                 }
             } catch (e) {
                 if (e.name !== 'AbortError') {
                     console.error('Link failed:', e);
-                    showToast('❌ تعذّر ربط الملف', 'error');
+                    alert('❌ تعذّر ربط الملف: ' + e.message);
                 }
             }
         }
@@ -884,7 +870,7 @@
                 showToast('✅ تم تحميل ملف Excel', 'success');
             } catch (e) {
                 console.error(e);
-                showToast('❌ تعذّر إنشاء ملف Excel', 'error');
+                showToast('❌ تعذّر إنشاء Excel', 'error');
             }
         }
 
@@ -954,16 +940,25 @@
             filtered.forEach(sub => {
                 const card = document.createElement('div');
                 card.onclick = () => showDetails(sub.id);
+
+                const rem = daysRemaining(sub);
+                const expiring = rem !== null && rem >= 0 && rem <= 3;
+
                 if (sub.status === 'connected') {
                     visibleConnected++;
-                    card.className = 'subscriber-card';
+                    card.className = 'subscriber-card' + (expiring ? ' expiring' : '');
                 } else {
                     visibleDisconnected++;
                     card.className = 'subscriber-card disconnected';
                 }
+
+                /* ✅ الاسم + شارة الأيام في سطر واحد */
                 card.innerHTML = `
                     <div class="sub-info">
-                        <h4>${escapeHTML(sub.name)}</h4>
+                        <h4>
+                            <span class="sub-name">${escapeHTML(sub.name)}</span>
+                            ${daysBadgeInline(sub)}
+                        </h4>
                         <p>${escapeHTML(sub.phone)}</p>
                     </div>
                     <div class="sub-details-right">
@@ -1020,10 +1015,22 @@
         }
 
         /* ================== النوافذ ================== */
+        function updateExpiryPreview() {
+            const start = document.getElementById('start-date').value;
+            const months = Number(document.getElementById('duration').value);
+            if (start && months) {
+                document.getElementById('expiry-date').value = addMonths(start, months);
+            } else {
+                document.getElementById('expiry-date').value = '';
+            }
+        }
+
         function openAddModal(id = null) {
             editingId = id;
             const title = document.getElementById('add-modal-title');
             const submit = document.getElementById('add-submit-btn');
+            const form = document.getElementById('add-form');
+            form.reset();
 
             if (id) {
                 const sub = subscribers.find(s => s.id === id);
@@ -1036,9 +1043,15 @@
                 document.getElementById('amount').value = sub.amount;
                 document.getElementById('currency').value = sub.currency;
                 document.getElementById('status').value = sub.status;
+                document.getElementById('start-date').value = sub.startDate || todayISO();
+                document.getElementById('duration').value = sub.durationMonths || 1;
+                updateExpiryPreview();
             } else {
                 title.textContent = 'إضافة مشترك جديد';
                 submit.textContent = 'حفظ المشترك';
+                document.getElementById('start-date').value = todayISO();
+                document.getElementById('duration').value = '1';
+                updateExpiryPreview();
             }
             document.getElementById('add-modal').classList.add('active');
         }
@@ -1050,16 +1063,23 @@
         }
         function closeDetailsModal() { document.getElementById('details-modal').classList.remove('active'); }
 
-        /* ================== الإضافة/التعديل ================== */
+        /* ================== الإضافة / التعديل ================== */
         async function handleAddSubscriber(e) {
             e.preventDefault();
+            const startDate = document.getElementById('start-date').value || null;
+            const durationMonths = startDate ? Number(document.getElementById('duration').value) : null;
+            const expiryDate = startDate && durationMonths ? addMonths(startDate, durationMonths) : null;
+
             const data = {
                 name: document.getElementById('fullname').value.trim(),
                 phone: document.getElementById('phone').value.trim(),
                 speed: document.getElementById('speed').value,
                 amount: Number(document.getElementById('amount').value),
                 currency: document.getElementById('currency').value,
-                status: document.getElementById('status').value
+                status: document.getElementById('status').value,
+                startDate,
+                durationMonths,
+                expiryDate
             };
 
             if (editingId) {
@@ -1079,6 +1099,38 @@
         function showDetails(id) {
             const sub = subscribers.find(s => s.id === id);
             if (!sub) return;
+
+            const rem = daysRemaining(sub);
+            let expiryInfo = '';
+            if (sub.expiryDate) {
+                let remColor = '#10b981';
+                let remText = `${rem} يوم`;
+                if (rem < 0) { remColor = '#f87171'; remText = `منتهي منذ ${Math.abs(rem)} يوم`; }
+                else if (rem === 0) { remColor = '#f59e0b'; remText = 'ينتهي اليوم'; }
+                else if (rem <= 3) { remColor = '#f59e0b'; remText = `${rem} يوم`; }
+
+                expiryInfo = `
+                    <div class="detail-row">
+                        <span class="detail-label">تاريخ البدء:</span>
+                        <span>${sub.startDate || '—'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">تاريخ الانتهاء:</span>
+                        <span>${sub.expiryDate}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">المتبقي:</span>
+                        <span style="color:${remColor}; font-weight:bold;">${remText}</span>
+                    </div>
+                `;
+            }
+
+            const expired = isExpired(sub);
+            const renewBtn = expired ? `
+                <button class="btn-submit" style="background:#10b981; margin-top:16px;" onclick="renewSubscription(${sub.id}, 1)">
+                    🔄 تجديد شهر (من اليوم)
+                </button>` : '';
+
             document.getElementById('details-content').innerHTML = `
                 <div class="detail-row"><span class="detail-label">الاسم:</span><span>${escapeHTML(sub.name)}</span></div>
                 <div class="detail-row"><span class="detail-label">الهاتف:</span><span>${escapeHTML(sub.phone)}</span></div>
@@ -1090,7 +1142,9 @@
                         ${sub.status === 'connected' ? 'متصل' : 'مقطوع'}
                     </span>
                 </div>
-                <button class="btn-submit" style="background: #0284c7; margin-top: 16px;" onclick="closeDetailsModal(); openAddModal(${sub.id})">
+                ${expiryInfo}
+                ${renewBtn}
+                <button class="btn-submit" style="background: #0284c7; margin-top: 10px;" onclick="closeDetailsModal(); openAddModal(${sub.id})">
                     ✏️ تعديل البيانات
                 </button>
                 <button class="btn-submit" style="background: ${sub.status === 'connected' ? '#ef4444' : '#10b981'};" onclick="toggleStatus(${sub.id})">
@@ -1103,17 +1157,41 @@
             document.getElementById('details-modal').classList.add('active');
         }
 
-        async function toggleStatus(id) {
+        /* ================== تجديد ================== */
+        async function renewSubscription(id, months = 1) {
             const sub = subscribers.find(s => s.id === id);
-            if (sub) {
-                sub.status = sub.status === 'connected' ? 'disconnected' : 'connected';
-                saveSubscribers();
-                render();
-                closeDetailsModal();
-                await autoSaveExcel();
-            }
+            if (!sub) return;
+            sub.startDate = todayISO();
+            sub.durationMonths = months;
+            sub.expiryDate = addMonths(sub.startDate, months);
+            sub.status = 'connected';
+            saveSubscribers();
+            render();
+            closeDetailsModal();
+            await autoSaveExcel();
+            showToast(`✅ تم تجديد ${sub.name} لمدة ${months} شهر`, 'success');
         }
 
+        /* ================== تعديل الحالة ================== */
+        async function toggleStatus(id) {
+            const sub = subscribers.find(s => s.id === id);
+            if (!sub) return;
+
+            if (sub.status === 'disconnected' && isExpired(sub)) {
+                if (confirm('هذا الاشتراك منتهي. هل تريد تجديده الآن (شهر واحد)؟')) {
+                    await renewSubscription(id, 1);
+                }
+                return;
+            }
+
+            sub.status = sub.status === 'connected' ? 'disconnected' : 'connected';
+            saveSubscribers();
+            render();
+            closeDetailsModal();
+            await autoSaveExcel();
+        }
+
+        /* ================== حذف ================== */
         async function deleteSubscriber(id) {
             if (!confirm('هل تريد إزالة المشترك نهائياً؟')) return;
             subscribers = subscribers.filter(s => s.id !== id);
@@ -1182,21 +1260,28 @@
                 speedSelect.appendChild(opt);
             }
 
-            // استرجاع مرجع ملف Excel
+            document.getElementById('start-date').addEventListener('change', updateExpiryPreview);
+            document.getElementById('duration').addEventListener('change', updateExpiryPreview);
+
             try {
                 const handle = await loadHandleFromDB();
                 if (handle) {
                     excelFileHandle = handle;
-                    // تحقق من الصلاحية (بدون طلب)
                     if (handle.queryPermission) {
                         const perm = await handle.queryPermission({ mode: 'readwrite' });
                         if (perm === 'granted') {
                             document.getElementById('excel-link-btn').classList.add('linked');
-                            document.getElementById('excel-link-btn').title = 'ملف Excel مرتبط ✅';
                         }
                     }
                 }
             } catch (e) { console.warn('تعذّر استرجاع مرجع Excel:', e); }
+
+            await checkExpirations();
+            setInterval(checkExpirations, EXPIRY_CHECK_INTERVAL);
+
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) checkExpirations();
+            });
 
             render();
         })();
