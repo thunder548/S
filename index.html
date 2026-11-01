@@ -18,12 +18,15 @@
             --accent-green: #10b981;
             --accent-orange: #f59e0b;
             --accent-red: #ef4444;
+            --accent-purple: #a855f7;
             --accent-red-bg: rgba(239, 68, 68, 0.15);
             --accent-red-border: rgba(239, 68, 68, 0.3);
             --accent-green-bg: rgba(16, 185, 129, 0.15);
             --accent-green-border: rgba(16, 185, 129, 0.35);
             --accent-orange-bg: rgba(245, 158, 11, 0.15);
             --accent-orange-border: rgba(245, 158, 11, 0.35);
+            --accent-purple-bg: rgba(168, 85, 247, 0.15);
+            --accent-purple-border: rgba(168, 85, 247, 0.35);
             --card-hover: rgba(255, 255, 255, 0.12);
             --pie-hole: #0d2347;
         }
@@ -50,7 +53,6 @@
 
         header { text-align: center; padding: 12px 0 20px 0; }
         .brand { display: flex; align-items: center; justify-content: center; gap: 10px; }
-
         .brand-icon {
             width: 40px; height: 40px;
             background: linear-gradient(135deg, #0284c7, #38bdf8);
@@ -58,7 +60,6 @@
             font-size: 20px; font-weight: bold;
             box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); flex-shrink: 0;
         }
-
         .brand-title {
             font-size: 1.8rem; font-weight: 800; letter-spacing: 1px;
             background: linear-gradient(to right, #ffffff, #93c5fd);
@@ -78,6 +79,7 @@
             font-size: 1.05rem; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
             transition: all 0.2s; color: var(--text-main);
+            position: relative;
         }
         .icon-btn:hover { background: var(--card-hover); transform: translateY(-1px); }
         .icon-btn.linked { border-color: var(--accent-green); background: rgba(16, 185, 129, 0.2); box-shadow: 0 0 10px rgba(16, 185, 129, 0.4); }
@@ -93,8 +95,92 @@
         .export-btn:hover:not(:disabled) { background: rgba(56, 189, 248, 0.3); transform: translateY(-1px); }
         .export-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
+        /* ============ البانر المالي ============ */
+        .financial-actions-banner {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px; margin-bottom: 16px; padding: 16px;
+            background: linear-gradient(135deg, rgba(168,85,247,0.12), rgba(56,189,248,0.12));
+            border: 2px solid rgba(168,85,247,0.3);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .action-btn {
+            padding: 16px 18px; border-radius: 14px; border: 2px solid;
+            cursor: pointer; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 8px;
+            font-family: inherit; font-weight: 800;
+            transition: all 0.25s ease; background: rgba(0,0,0,0.2);
+            color: var(--text-main); position: relative; overflow: hidden;
+        }
+        .action-btn::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.08) 100%);
+            opacity: 0; transition: opacity 0.25s;
+        }
+        .action-btn:hover::before { opacity: 1; }
+        .action-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 25px rgba(0,0,0,0.4); }
+        .action-btn:active { transform: translateY(-1px); }
+
+        .action-btn.expense {
+            border-color: #ef4444; color: #fca5a5; background: rgba(239,68,68,0.15);
+        }
+        .action-btn.expense:hover {
+            background: rgba(239,68,68,0.25); box-shadow: 0 6px 25px rgba(239,68,68,0.3);
+        }
+        .action-btn.report {
+            border-color: #a855f7; color: #d8b4fe; background: rgba(168,85,247,0.15);
+        }
+        .action-btn.report:hover {
+            background: rgba(168,85,247,0.25); box-shadow: 0 6px 25px rgba(168,85,247,0.3);
+        }
+        .action-btn.rate {
+            border-color: #38bdf8; color: #7dd3fc; background: rgba(56,189,248,0.15);
+        }
+        .action-btn.rate:hover {
+            background: rgba(56,189,248,0.25); box-shadow: 0 6px 25px rgba(56,189,248,0.3);
+        }
+
+        .action-btn .ab-icon { font-size: 1.8rem; line-height: 1; }
+        .action-btn .ab-label { font-size: 0.95rem; font-weight: 800; letter-spacing: 0.3px; }
+        .action-btn .ab-sub { font-size: 0.72rem; opacity: 0.8; font-weight: 600; }
+
+        /* ============ اللوحة المالية ============ */
+        .finance-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px; padding: 16px; margin-bottom: 16px;
+        }
+        .finance-box {
+            padding: 12px 16px; border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex; flex-direction: column; gap: 5px; min-width: 0;
+        }
+        .finance-box.green { background: var(--accent-green-bg); border-color: var(--accent-green-border); }
+        .finance-box.blue { background: rgba(56,189,248,0.15); border-color: rgba(56,189,248,0.35); }
+        .finance-box.purple { background: var(--accent-purple-bg); border-color: var(--accent-purple-border); }
+
+        .finance-title { font-size: 0.82rem; color: var(--text-muted); line-height: 1.2; }
+        .finance-box.green .finance-title { color: #6ee7b7; }
+        .finance-box.blue .finance-title { color: #7dd3fc; }
+        .finance-box.purple .finance-title { color: #d8b4fe; }
+
+        .finance-value {
+            font-size: 1.15rem; font-weight: bold; word-break: break-word;
+            display: flex; flex-direction: column; gap: 2px;
+        }
+        .finance-sub { font-size: 0.75rem; opacity: 0.85; font-weight: 500; }
+
+        .finance-box.green .finance-value { color: #10b981; }
+        .finance-box.blue .finance-value { color: #38bdf8; }
+        .finance-box.purple .finance-value { color: #a855f7; }
+
+        /* ============ بانر المشتركين ============ */
         .stats-banner {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 12px; padding: 16px; margin-bottom: 16px;
         }
         .stat-box {
@@ -105,16 +191,13 @@
         }
         .stat-box.red { background: var(--accent-red-bg); border-color: var(--accent-red-border); }
         .stat-box.green { background: var(--accent-green-bg); border-color: var(--accent-green-border); }
-        .stat-box.orange { background: var(--accent-orange-bg); border-color: var(--accent-orange-border); }
 
         .stat-title { font-size: 0.85rem; color: var(--text-muted); line-height: 1.3; }
         .stat-box.red .stat-title { color: #fca5a5; }
         .stat-box.green .stat-title { color: #6ee7b7; }
-        .stat-box.orange .stat-title { color: #fcd34d; }
         .stat-value { font-size: 1.35rem; font-weight: bold; word-break: break-word; }
         .stat-box.red .stat-value { color: #f87171; }
         .stat-box.green .stat-value { color: #10b981; }
-        .stat-box.orange .stat-value { color: #f59e0b; }
 
         .search-bar { position: relative; margin-bottom: 16px; }
         .search-input {
@@ -185,44 +268,36 @@
         .subscriber-card.disconnected:hover { background: rgba(239, 68, 68, 0.15); }
         .subscriber-card.expiring { border-color: var(--accent-orange-border); background: rgba(245, 158, 11, 0.06); }
         .subscriber-card.expiring:hover { background: rgba(245, 158, 11, 0.15); }
+        .subscriber-card.debtor { border-color: #dc2626 !important; background: rgba(220, 38, 38, 0.1) !important; }
+        .subscriber-card.debtor::before { content: '💰 '; }
 
         .sub-info { min-width: 0; flex: 1; }
-
-        /* ✅ الاسم + شارة الأيام المتبقية في سطر واحد */
         .sub-info h4 {
-            font-size: 0.95rem;
-            margin-bottom: 3px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            overflow: visible;
-            text-overflow: clip;
-            white-space: normal;
+            font-size: 0.95rem; margin-bottom: 3px;
+            display: flex; align-items: center; gap: 6px;
+            overflow: visible; text-overflow: clip; white-space: normal;
         }
         .sub-name {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            min-width: 0;
-            flex-shrink: 1;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            min-width: 0; flex-shrink: 1;
         }
         .days-badge {
-            font-size: 0.68rem;
-            padding: 2px 7px;
-            border-radius: 10px;
-            font-weight: 700;
-            flex-shrink: 0;
-            line-height: 1.4;
-            white-space: nowrap;
-            letter-spacing: 0;
+            font-size: 0.68rem; padding: 2px 7px; border-radius: 10px;
+            font-weight: 700; flex-shrink: 0; line-height: 1.4;
+            white-space: nowrap; letter-spacing: 0;
         }
-
+        .debt-badge {
+            font-size: 0.68rem; padding: 2px 7px; border-radius: 10px;
+            font-weight: 700; flex-shrink: 0; line-height: 1.4;
+            white-space: nowrap;
+            background: rgba(220,38,38,0.3); color: #fca5a5;
+        }
         .sub-info p { font-size: 0.8rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
         .sub-details-right { text-align: left; flex-shrink: 0; }
         .sub-price { font-weight: bold; font-size: 0.9rem; color: var(--accent-green); }
         .sub-speed { font-size: 0.75rem; color: var(--accent-blue); }
         .subscriber-card.disconnected .sub-price { color: #f87171; }
+        .subscriber-card.debtor .sub-price { color: #fca5a5; }
 
         .empty-state { text-align: center; padding: 20px; color: var(--text-muted); font-size: 0.9rem; }
 
@@ -247,6 +322,7 @@
         }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
         .modal { width: 100%; max-width: 420px; padding: 20px; border-radius: 18px; position: relative; max-height: 90vh; overflow-y: auto; }
+        .modal.wide { max-width: 650px; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 10px; }
         .modal-header h3 { font-size: 1.05rem; }
         .close-btn { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; line-height: 1; flex-shrink: 0; }
@@ -269,6 +345,9 @@
             color: white; font-weight: bold; font-size: 0.95rem;
             cursor: pointer; margin-top: 10px;
         }
+        .btn-secondary { background: linear-gradient(135deg, #64748b, #475569) !important; }
+        .btn-danger { background: linear-gradient(135deg, #dc2626, #991b1b) !important; }
+        .btn-success { background: linear-gradient(135deg, #059669, #047857) !important; }
 
         #login-overlay { z-index: 2000; }
         .login-modal { max-width: 380px; }
@@ -282,6 +361,99 @@
         .detail-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); gap: 10px; font-size: 0.9rem; }
         .detail-row span:last-child { text-align: left; word-break: break-word; }
         .detail-label { color: var(--text-muted); flex-shrink: 0; }
+
+        .payments-section { margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .payments-title {
+            font-size: 0.9rem; font-weight: bold; margin-bottom: 8px;
+            color: #93c5fd; display: flex; justify-content: space-between; align-items: center;
+        }
+        .payments-list {
+            display: flex; flex-direction: column; gap: 6px;
+            max-height: 220px; overflow-y: auto; padding-right: 4px;
+        }
+        .payment-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 10px; border-radius: 8px;
+            background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2);
+            gap: 8px; font-size: 0.82rem;
+        }
+        .payment-item.expense { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.2); }
+        .payment-info { flex: 1; min-width: 0; }
+        .payment-info strong { display: block; color: #10b981; font-size: 0.9rem; }
+        .payment-item.expense .payment-info strong { color: #f87171; }
+        .payment-info small { color: var(--text-muted); font-size: 0.72rem; }
+        .payment-receipt { font-size: 0.7rem; color: #94a3b8; font-family: monospace; }
+        .payment-actions { display: flex; gap: 4px; flex-shrink: 0; }
+        .mini-btn {
+            width: 26px; height: 26px; border-radius: 6px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.3); color: var(--text-main);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; transition: all 0.2s;
+        }
+        .mini-btn:hover { background: var(--card-hover); }
+        .mini-btn.danger:hover { background: #7f1d1d; border-color: #ef4444; }
+
+        /* ============ التقرير المفصّل ============ */
+        .report-hero {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px; margin-bottom: 18px;
+        }
+        .report-card {
+            padding: 16px 18px; border-radius: 14px; border: 2px solid;
+            display: flex; flex-direction: column; gap: 6px; text-align: center;
+        }
+        .report-card.revenue { background: rgba(16,185,129,0.15); border-color: #10b981; }
+        .report-card.expense { background: rgba(239,68,68,0.15); border-color: #ef4444; }
+        .report-card.profit { background: rgba(168,85,247,0.15); border-color: #a855f7; }
+        .report-card.profit.negative { background: rgba(239,68,68,0.15); border-color: #ef4444; }
+        .report-card-label { font-size: 0.85rem; font-weight: 700; color: #e2e8f0; letter-spacing: 0.3px; }
+        .report-card.revenue .report-card-label { color: #a7f3d0; }
+        .report-card.expense .report-card-label { color: #fecaca; }
+        .report-card.profit .report-card-label { color: #e9d5ff; }
+        .report-card-value { font-size: 2rem; font-weight: 900; line-height: 1.1; letter-spacing: -0.5px; }
+        .report-card.revenue .report-card-value { color: #10b981; }
+        .report-card.expense .report-card-value { color: #f87171; }
+        .report-card.profit .report-card-value { color: #a855f7; }
+        .report-card.profit.negative .report-card-value { color: #f87171; }
+        .report-card-sub { font-size: 0.85rem; font-weight: 700; opacity: 0.9; }
+        .report-card.revenue .report-card-sub { color: #6ee7b7; }
+        .report-card.expense .report-card-sub { color: #fca5a5; }
+        .report-card.profit .report-card-sub { color: #d8b4fe; }
+        .report-card.profit.negative .report-card-sub { color: #fca5a5; }
+
+        .report-summary-box {
+            background: rgba(56,189,248,0.08);
+            border: 2px solid rgba(56,189,248,0.3);
+            border-radius: 12px; padding: 14px 16px; margin-bottom: 16px;
+            font-size: 0.9rem; line-height: 1.8;
+        }
+        .report-summary-box strong { font-weight: 900; color: #ffffff; font-size: 1rem; }
+        .report-summary-box .sum-label { color: #93c5fd; font-weight: 700; }
+
+        .report-section-title {
+            font-size: 1rem; font-weight: 900; margin: 16px 0 10px 0;
+            padding-bottom: 6px; border-bottom: 2px solid rgba(255,255,255,0.15);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .report-section-title.payments { color: #10b981; }
+        .report-section-title.expenses { color: #f87171; }
+
+        .report-detail-item {
+            padding: 10px 12px; border-radius: 8px;
+            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 6px; display: flex; justify-content: space-between;
+            align-items: center; gap: 10px; font-size: 0.85rem;
+        }
+        .report-detail-item.payment { border-left: 3px solid #10b981; }
+        .report-detail-item.expense { border-left: 3px solid #ef4444; }
+        .report-detail-main { flex: 1; min-width: 0; }
+        .report-detail-main .rd-name { font-weight: 900; font-size: 0.95rem; color: #ffffff; margin-bottom: 2px; }
+        .report-detail-main .rd-meta { font-size: 0.75rem; color: #94a3b8; font-weight: 600; }
+        .report-detail-amount { font-weight: 900; font-size: 1.05rem; white-space: nowrap; }
+        .report-detail-item.payment .report-detail-amount { color: #10b981; }
+        .report-detail-item.expense .report-detail-amount { color: #f87171; }
 
         .toast {
             position: fixed; bottom: 90px; left: 20px;
@@ -297,10 +469,35 @@
         .toast.toast-error { background: #7f1d1d; border-color: #ef4444; }
         .toast.toast-warning { background: #78350f; border-color: #f59e0b; }
 
+        /* ============ نافذة التأكيد المخصصة ============ */
+        .confirm-modal { max-width: 380px; text-align: center; }
+        .confirm-modal .confirm-icon { font-size: 2.5rem; margin-bottom: 12px; line-height: 1; }
+        .confirm-modal .confirm-message {
+            font-size: 0.95rem; line-height: 1.7; margin-bottom: 20px;
+            color: var(--text-main); font-weight: 600;
+        }
+        .confirm-modal .confirm-actions {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+        }
+        .confirm-modal .confirm-actions .btn-submit { margin-top: 0; }
+
         @media (max-width: 600px) {
-            .stats-banner { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 12px; }
-            .stat-value { font-size: 1.2rem; }
-            .stat-title { font-size: 0.8rem; }
+            .stats-banner { grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px; }
+            .stat-value { font-size: 1.05rem; }
+            .stat-title { font-size: 0.72rem; }
+            .finance-dashboard { grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px; }
+            .finance-value { font-size: 0.9rem; }
+            .finance-title { font-size: 0.7rem; }
+            .finance-sub { font-size: 0.65rem; }
+            .financial-actions-banner { grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px; }
+            .action-btn { padding: 10px 6px; gap: 4px; }
+            .action-btn .ab-icon { font-size: 1.4rem; }
+            .action-btn .ab-label { font-size: 0.78rem; }
+            .action-btn .ab-sub { display: none; }
+            .report-card { padding: 12px 10px; }
+            .report-card-value { font-size: 1.5rem; }
+            .report-card-label { font-size: 0.75rem; }
+            .report-card-sub { font-size: 0.75rem; }
         }
         @media (max-width: 480px) {
             body { padding: 12px; padding-bottom: 85px; }
@@ -310,15 +507,19 @@
             .section-title { font-size: 1.05rem; }
             .export-btn { padding: 8px 10px; font-size: 0.78rem; }
             .icon-btn { width: 34px; height: 34px; font-size: 0.95rem; }
-            .stat-box { padding: 10px 12px; }
-            .stat-value { font-size: 1.1rem; }
-            .stat-title { font-size: 0.72rem; }
+            .stat-box { padding: 8px 10px; }
+            .stat-value { font-size: 0.95rem; }
+            .stat-title { font-size: 0.68rem; }
+            .finance-box { padding: 8px 10px; }
+            .finance-value { font-size: 0.85rem; }
+            .finance-title { font-size: 0.65rem; }
+            .finance-sub { font-size: 0.6rem; }
             .list-section { padding: 12px; min-height: 180px; }
             .section-header { font-size: 1rem; }
             .subscriber-card { padding: 9px 12px; }
             .sub-info h4 { font-size: 0.9rem; }
             .sub-info p { font-size: 0.75rem; }
-            .days-badge { font-size: 0.62rem; padding: 1px 6px; }
+            .days-badge, .debt-badge { font-size: 0.62rem; padding: 1px 6px; }
             .sub-price { font-size: 0.85rem; }
             .sub-speed { font-size: 0.7rem; }
             .fab { width: 50px; height: 50px; font-size: 24px; bottom: 18px; left: 18px; }
@@ -333,12 +534,24 @@
             .chart-content { gap: 12px; }
             .search-input { padding: 10px 40px 10px 12px; font-size: 0.9rem; }
             .form-row { grid-template-columns: 1fr; }
+            .payment-item { padding: 6px 8px; font-size: 0.75rem; }
+            .action-btn { padding: 8px 4px; }
+            .action-btn .ab-icon { font-size: 1.2rem; }
+            .action-btn .ab-label { font-size: 0.7rem; }
+            .report-card-value { font-size: 1.3rem; }
+            .report-card-label { font-size: 0.7rem; }
+            .report-card-sub { font-size: 0.7rem; }
         }
         @media (max-width: 360px) {
-            .stats-banner { gap: 8px; padding: 10px; }
-            .stat-box { padding: 8px 10px; }
-            .stat-value { font-size: 1rem; }
-            .stat-title { font-size: 0.68rem; }
+            .stats-banner { gap: 6px; padding: 8px; }
+            .stat-box { padding: 6px 8px; }
+            .stat-value { font-size: 0.85rem; }
+            .stat-title { font-size: 0.62rem; }
+            .finance-dashboard { gap: 6px; padding: 8px; }
+            .finance-box { padding: 6px 8px; }
+            .finance-value { font-size: 0.75rem; }
+            .finance-title { font-size: 0.6rem; }
+            .finance-sub { font-size: 0.55rem; }
             .brand-title { font-size: 1.3rem; }
             .brand-icon { width: 30px; height: 30px; font-size: 15px; }
             .section-title { font-size: 0.95rem; }
@@ -346,7 +559,7 @@
             .icon-btn { width: 30px; height: 30px; font-size: 0.85rem; }
             .sub-info h4 { font-size: 0.85rem; }
             .sub-info p { font-size: 0.7rem; }
-            .days-badge { font-size: 0.58rem; padding: 1px 5px; }
+            .days-badge, .debt-badge { font-size: 0.58rem; padding: 1px 5px; }
             .sub-price { font-size: 0.8rem; }
             .sub-speed { font-size: 0.65rem; }
             .section-header { font-size: 0.92rem; }
@@ -367,19 +580,16 @@
         body.light-mode .stat-box { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.06); }
         body.light-mode .stat-box.green { background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.4); }
         body.light-mode .stat-box.red { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.35); }
-        body.light-mode .stat-box.orange { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.4); }
         body.light-mode .stat-box.green .stat-title { color: #047857; }
         body.light-mode .stat-box.red .stat-title { color: #b91c1c; }
-        body.light-mode .stat-box.orange .stat-title { color: #b45309; }
         body.light-mode .stat-box.green .stat-value { color: #059669; }
         body.light-mode .stat-box.red .stat-value { color: #dc2626; }
-        body.light-mode .stat-box.orange .stat-value { color: #d97706; }
+        body.light-mode .finance-box { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.06); }
         body.light-mode .subscriber-card { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.35); }
         body.light-mode .subscriber-card:hover { background: rgba(16,185,129,0.15); }
         body.light-mode .subscriber-card.disconnected { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.35); }
-        body.light-mode .subscriber-card.disconnected:hover { background: rgba(239,68,68,0.15); }
         body.light-mode .subscriber-card.expiring { background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.4); }
-        body.light-mode .subscriber-card.expiring:hover { background: rgba(245,158,11,0.15); }
+        body.light-mode .subscriber-card.debtor { background: rgba(220,38,38,0.08) !important; }
         body.light-mode .sub-info p { color: #64748b; }
         body.light-mode .sub-price { color: #059669; }
         body.light-mode .subscriber-card.disconnected .sub-price { color: #dc2626; }
@@ -391,12 +601,21 @@
         body.light-mode .modal-overlay { background: rgba(0,0,0,0.3); }
         body.light-mode .export-btn { background: rgba(56,189,248,0.2); color: #0369a1; border-color: #0284c7; }
         body.light-mode .icon-btn { background: rgba(255,255,255,0.85); color: #1e293b; border-color: rgba(0,0,0,0.1); }
-        body.light-mode .icon-btn.linked { background: rgba(16,185,129,0.2); border-color: #059669; }
         body.light-mode .search-input { background: rgba(255,255,255,0.85); color: #1e293b; }
         body.light-mode .section-header { border-bottom-color: rgba(0,0,0,0.08); }
         body.light-mode .badge { background: rgba(0,0,0,0.06); color: #1e293b; }
         body.light-mode .badge.red { background: rgba(239,68,68,0.15); color: #b91c1c; }
         body.light-mode .bar-track { background: rgba(239,68,68,0.18); }
+        body.light-mode .payment-item { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.25); }
+        body.light-mode .payment-item.expense { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.25); }
+        body.light-mode .payments-section { border-top-color: rgba(0,0,0,0.1); }
+        body.light-mode .mini-btn { background: rgba(255,255,255,0.9); color: #1e293b; }
+        body.light-mode .financial-actions-banner { background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(56,189,248,0.08)); }
+        body.light-mode .action-btn { background: rgba(255,255,255,0.5); color: #1e293b; }
+        body.light-mode .report-summary-box { background: rgba(56,189,248,0.1); }
+        body.light-mode .report-summary-box strong { color: #0f172a; }
+        body.light-mode .report-detail-item { background: rgba(0,0,0,0.04); }
+        body.light-mode .report-detail-main .rd-name { color: #0f172a; }
 
         .pdf-export-mode {
             background: linear-gradient(135deg, #0b1d3a 0%, #102a52 40%, #1a3a68 70%, #0d2347 100%) !important;
@@ -404,32 +623,22 @@
         }
         .pdf-export-mode .glass-card { background: #16305a !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border: 1px solid rgba(255,255,255,0.25) !important; box-shadow: none !important; }
         .pdf-export-mode .section-title { color: #93c5fd !important; }
-        .pdf-export-mode .export-btn, .pdf-export-mode .icon-btn, .pdf-export-mode .fab, .pdf-export-mode .search-bar, .pdf-export-mode .chart-section { display: none !important; }
+        .pdf-export-mode .export-btn, .pdf-export-mode .icon-btn, .pdf-export-mode .fab, .pdf-export-mode .search-bar, .pdf-export-mode .chart-section, .pdf-export-mode .financial-actions-banner { display: none !important; }
         .pdf-export-mode .brand-title { background: none !important; -webkit-background-clip: initial !important; background-clip: initial !important; -webkit-text-fill-color: #ffffff !important; color: #ffffff !important; }
         .pdf-export-mode .stat-box { background: #1e3a6e !important; border: 1px solid rgba(255,255,255,0.2) !important; }
         .pdf-export-mode .stat-box.green { background: #064e3b !important; border-color: #10b981 !important; }
         .pdf-export-mode .stat-box.red { background: #7f1d1d !important; border-color: #ef4444 !important; }
-        .pdf-export-mode .stat-box.orange { background: #78350f !important; border-color: #f59e0b !important; }
-        .pdf-export-mode .stat-title { color: #e2e8f0 !important; }
-        .pdf-export-mode .stat-box.green .stat-title { color: #a7f3d0 !important; }
-        .pdf-export-mode .stat-box.red .stat-title { color: #fecaca !important; }
-        .pdf-export-mode .stat-box.orange .stat-title { color: #fde68a !important; }
-        .pdf-export-mode .stat-value { color: #ffffff !important; }
-        .pdf-export-mode .stat-box.green .stat-value { color: #34d399 !important; }
-        .pdf-export-mode .stat-box.red .stat-value { color: #f87171 !important; }
-        .pdf-export-mode .stat-box.orange .stat-value { color: #fbbf24 !important; }
+        .pdf-export-mode .finance-box { background: #1e3a6e !important; border: 1px solid rgba(255,255,255,0.2) !important; }
+        .pdf-export-mode .stat-title, .pdf-export-mode .finance-title { color: #e2e8f0 !important; }
+        .pdf-export-mode .stat-value, .pdf-export-mode .finance-value { color: #ffffff !important; }
         .pdf-export-mode .subscriber-card { background: #064e3b !important; border: 1px solid #10b981 !important; }
         .pdf-export-mode .subscriber-card.disconnected { background: #7f1d1d !important; border: 1px solid #ef4444 !important; }
-        .pdf-export-mode .subscriber-card.expiring { background: #78350f !important; border: 1px solid #f59e0b !important; }
         .pdf-export-mode .sub-price { color: #34d399 !important; }
-        .pdf-export-mode .subscriber-card.disconnected .sub-price { color: #f87171 !important; }
         .pdf-export-mode .sub-speed { color: #38bdf8 !important; }
         .pdf-export-mode .sub-info p { color: #cbd5e1 !important; }
-        .pdf-export-mode .days-badge { background: rgba(255,255,255,0.15) !important; color: #ffffff !important; }
+        .pdf-export-mode .days-badge, .pdf-export-mode .debt-badge { background: rgba(255,255,255,0.15) !important; color: #ffffff !important; }
         .pdf-export-mode .section-header { color: #ffffff !important; border-bottom-color: rgba(255,255,255,0.25) !important; }
-        .pdf-export-mode .section-header.red { color: #f87171 !important; }
         .pdf-export-mode .badge { background: #1e3a6e !important; color: #ffffff !important; }
-        .pdf-export-mode .badge.red { background: #7f1d1d !important; color: #fecaca !important; }
         .pdf-export-mode footer { color: #cbd5e1 !important; }
     </style>
 </head>
@@ -463,13 +672,55 @@
         </header>
 
         <div class="toolbar">
-            <h2 class="section-title">📊 لوحة تحكم حسابات الشركة</h2>
+            <h2 class="section-title">📊 لوحة تحكم المحاسبة</h2>
             <div class="toolbar-actions">
-                <button class="icon-btn" id="excel-link-btn" onclick="linkExcelFile()" title="ربط ملف Excel للتحديث التلقائي">📊</button>
-                <button class="icon-btn" onclick="downloadExcel()" title="تحميل نسخة Excel">💾</button>
-                <button class="icon-btn" onclick="toggleTheme()" id="theme-btn" title="تغيير الوضع">☀️</button>
+                <button class="icon-btn" id="excel-link-btn" onclick="linkExcelFile()" title="ربط Excel">📊</button>
+                <button class="icon-btn" onclick="downloadExcel()" title="تحميل Excel">💾</button>
+                <button class="icon-btn" onclick="toggleTheme()" id="theme-btn" title="الوضع">☀️</button>
                 <button class="export-btn" onclick="exportPDF(event)">📄 PDF</button>
-                <button class="icon-btn" onclick="logout()" title="تسجيل الخروج">🚪</button>
+                <button class="icon-btn" onclick="logout()" title="خروج">🚪</button>
+            </div>
+        </div>
+
+        <div class="financial-actions-banner">
+            <button class="action-btn expense" onclick="openExpensesModal()">
+                <span class="ab-icon">💸</span>
+                <span class="ab-label">المصروفات</span>
+                <span class="ab-sub">تسجيل ومتابعة</span>
+            </button>
+            <button class="action-btn report" onclick="openReportsModal()">
+                <span class="ab-icon">📈</span>
+                <span class="ab-label">التقارير الشهرية</span>
+                <span class="ab-sub">إيرادات ومصروفات</span>
+            </button>
+            <button class="action-btn rate" onclick="openExchangeRateModal()">
+                <span class="ab-icon">💱</span>
+                <span class="ab-label">سعر الصرف</span>
+                <span class="ab-sub" id="rate-label">1$ = 15,000 ل.س</span>
+            </button>
+        </div>
+
+        <div class="glass-card finance-dashboard">
+            <div class="finance-box green">
+                <span class="finance-title">💵 إجمالي المحصّل</span>
+                <span class="finance-value" id="fin-collected">
+                    <span>$0</span>
+                    <span class="finance-sub">0 ل.س</span>
+                </span>
+            </div>
+            <div class="finance-box blue">
+                <span class="finance-title">📅 محصّل هذا الشهر</span>
+                <span class="finance-value" id="fin-month">
+                    <span>$0</span>
+                    <span class="finance-sub">0 ل.س</span>
+                </span>
+            </div>
+            <div class="finance-box purple">
+                <span class="finance-title">💸 مصروفات هذا الشهر</span>
+                <span class="finance-value" id="fin-exp-month">
+                    <span>$0</span>
+                    <span class="finance-sub">0 ل.س</span>
+                </span>
             </div>
         </div>
 
@@ -483,20 +734,8 @@
                 <span class="stat-value" id="disconnected-count">0</span>
             </div>
             <div class="stat-box">
-                <span class="stat-title">مجموع المبلغ الواصل ($)</span>
-                <span class="stat-value" id="total-usd">$0</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-title">مجموع المبلغ الواصل (ل.س)</span>
-                <span class="stat-value" id="total-syp">0 ل.س</span>
-            </div>
-            <div class="stat-box orange">
-                <span class="stat-title">المبلغ غير الواصل ($)</span>
-                <span class="stat-value" id="unpaid-usd">$0</span>
-            </div>
-            <div class="stat-box orange">
-                <span class="stat-title">المبلغ غير الواصل (ل.س)</span>
-                <span class="stat-value" id="unpaid-syp">0 ل.س</span>
+                <span class="stat-title">إجمالي الاشتراكات الشهرية</span>
+                <span class="stat-value" id="monthly-total">0</span>
             </div>
         </div>
 
@@ -548,6 +787,7 @@
 
     <button class="fab" onclick="openAddModal()">+</button>
 
+    <!-- Modal: إضافة/تعديل مشترك -->
     <div class="modal-overlay" id="add-modal">
         <div class="glass-card modal">
             <div class="modal-header">
@@ -568,7 +808,7 @@
                     <select class="form-control" id="speed" required></select>
                 </div>
                 <div class="form-group">
-                    <label>قيمة الدفع المستحق</label>
+                    <label>قيمة الاشتراك الشهري</label>
                     <input type="number" class="form-control" id="amount" required min="0" step="any">
                 </div>
                 <div class="form-row">
@@ -604,7 +844,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>تاريخ الانتهاء (يُحسب تلقائياً)</label>
+                    <label>تاريخ الانتهاء (تلقائي)</label>
                     <input type="date" class="form-control" id="expiry-date" readonly>
                 </div>
                 <button type="submit" class="btn-submit" id="add-submit-btn">حفظ المشترك</button>
@@ -612,8 +852,9 @@
         </div>
     </div>
 
+    <!-- Modal: تفاصيل المشترك -->
     <div class="modal-overlay" id="details-modal">
-        <div class="glass-card modal">
+        <div class="glass-card modal wide">
             <div class="modal-header">
                 <h3>تفاصيل المشترك</h3>
                 <button class="close-btn" onclick="closeDetailsModal()">&times;</button>
@@ -622,13 +863,160 @@
         </div>
     </div>
 
+    <!-- Modal: تسجيل دفعة -->
+    <div class="modal-overlay" id="payment-modal">
+        <div class="glass-card modal">
+            <div class="modal-header">
+                <h3>💵 تسجيل دفعة</h3>
+                <button class="close-btn" onclick="closePaymentModal()">&times;</button>
+            </div>
+            <form onsubmit="handleAddPayment(event)">
+                <input type="hidden" id="pay-sub-id">
+                <div class="form-group">
+                    <label>اسم المشترك</label>
+                    <input type="text" class="form-control" id="pay-sub-name" readonly>
+                </div>
+                <div class="form-group">
+                    <label>المبلغ (دفع كامل فقط)</label>
+                    <input type="number" class="form-control" id="pay-amount" readonly>
+                </div>
+                <div class="form-group">
+                    <label>تاريخ الدفع</label>
+                    <input type="date" class="form-control" id="pay-date" required>
+                </div>
+                <div class="form-group">
+                    <label>طريقة الدفع</label>
+                    <select class="form-control" id="pay-method">
+                        <option value="نقداً">نقداً</option>
+                        <option value="تحويل بنكي">تحويل بنكي</option>
+                        <option value="محفظة إلكترونية">محفظة إلكترونية</option>
+                        <option value="شيك">شيك</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>ملاحظات (اختياري)</label>
+                    <input type="text" class="form-control" id="pay-note" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label>رقم الإيصال (تلقائي)</label>
+                    <input type="text" class="form-control" id="pay-receipt" readonly>
+                </div>
+                <button type="submit" class="btn-submit btn-success">✔ حفظ الدفعة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: المصروفات -->
+    <div class="modal-overlay" id="expenses-modal">
+        <div class="glass-card modal wide">
+            <div class="modal-header">
+                <h3>💸 المصروفات</h3>
+                <button class="close-btn" onclick="closeExpensesModal()">&times;</button>
+            </div>
+            <button class="btn-submit" onclick="openAddExpenseForm()" style="margin-bottom:12px; background:linear-gradient(135deg,#dc2626,#991b1b);">+ إضافة مصروف</button>
+            <div id="expense-form-container" style="display:none; margin-bottom:16px; padding:12px; border-radius:10px; background:rgba(0,0,0,0.2); border:1px solid rgba(239,68,68,0.3);">
+                <form onsubmit="handleAddExpense(event)">
+                    <div class="form-group">
+                        <label>الفئة</label>
+                        <select class="form-control" id="exp-category" required>
+                            <option value="باقة إنترنت">باقة إنترنت</option>
+                            <option value="رواتب">رواتب</option>
+                            <option value="كهرباء">كهرباء</option>
+                            <option value="إيجار">إيجار</option>
+                            <option value="صيانة">صيانة</option>
+                            <option value="معدات">معدات</option>
+                            <option value="مواصلات">مواصلات</option>
+                            <option value="أخرى">أخرى</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>المبلغ</label>
+                            <input type="number" class="form-control" id="exp-amount" required min="0" step="any">
+                        </div>
+                        <div class="form-group">
+                            <label>العملة</label>
+                            <select class="form-control" id="exp-currency">
+                                <option value="USD">دولار ($)</option>
+                                <option value="SYP">ليرة سورية (ل.س)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>التاريخ</label>
+                        <input type="date" class="form-control" id="exp-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>ملاحظات</label>
+                        <input type="text" class="form-control" id="exp-note" maxlength="100">
+                    </div>
+                    <button type="submit" class="btn-submit btn-danger">حفظ المصروف</button>
+                    <button type="button" class="btn-submit btn-secondary" onclick="closeAddExpenseForm()">إلغاء</button>
+                </form>
+            </div>
+            <div class="payments-title">
+                <span>سجل المصروفات</span>
+                <small id="expense-count" style="color:#94a3b8;">0</small>
+            </div>
+            <div class="payments-list" id="expenses-list" style="max-height:400px;"></div>
+        </div>
+    </div>
+
+    <!-- Modal: التقارير -->
+    <div class="modal-overlay" id="reports-modal">
+        <div class="glass-card modal wide">
+            <div class="modal-header">
+                <h3>📈 التقارير الشهرية</h3>
+                <button class="close-btn" onclick="closeReportsModal()">&times;</button>
+            </div>
+            <div class="form-group">
+                <label>اختر الشهر</label>
+                <input type="month" class="form-control" id="report-month" onchange="renderReport()">
+            </div>
+            <div id="report-content" style="margin-top:16px;"></div>
+        </div>
+    </div>
+
+    <!-- Modal: سعر الصرف -->
+    <div class="modal-overlay" id="rate-modal">
+        <div class="glass-card modal">
+            <div class="modal-header">
+                <h3>💱 سعر الصرف</h3>
+                <button class="close-btn" onclick="closeExchangeRateModal()">&times;</button>
+            </div>
+            <form onsubmit="saveExchangeRate(event)">
+                <div class="form-group">
+                    <label>سعر صرف الدولار (لكل 1$)</label>
+                    <input type="number" class="form-control" id="rate-value" required min="1" step="any">
+                    <small style="color:var(--text-muted); font-size:0.75rem; display:block; margin-top:6px;">
+                        يُستخدم لتحويل المبالغ لتقارير موحّدة
+                    </small>
+                </div>
+                <button type="submit" class="btn-submit">حفظ</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ✅ Modal: تأكيد مخصص -->
+    <div class="modal-overlay" id="confirm-modal">
+        <div class="glass-card modal confirm-modal">
+            <div class="confirm-icon" id="confirm-icon">⚠️</div>
+            <div class="confirm-message" id="confirm-message"></div>
+            <div class="confirm-actions">
+                <button class="btn-submit btn-secondary" onclick="resolveConfirm(false)">إلغاء</button>
+                <button class="btn-submit btn-danger" onclick="resolveConfirm(true)" id="confirm-yes-btn">تأكيد</button>
+            </div>
+        </div>
+    </div>
+
     <footer>
         تم التصميم والتطوير بواسطة : Thunder <span class="thunder-icon">⚡</span>
     </footer>
 
     <script>
-        /* ================== الثوابت ================== */
         const STORAGE_KEY = 'spacenet_subscribers';
+        const EXPENSES_KEY = 'spacenet_expenses';
+        const SETTINGS_KEY = 'spacenet_settings';
         const SESSION_KEY = 'spacenet_session';
         const THEME_KEY = 'spacenet_theme';
         const DB_NAME = 'SpaceNetDB';
@@ -638,41 +1026,42 @@
         const EXPIRY_CHECK_INTERVAL = 60 * 1000;
 
         const DEFAULT_SUBSCRIBERS = [
-            { id: 1, name: "أحمد محمد العلي", phone: "0912345678", speed: "8 ميجا", amount: 15, currency: "USD", status: "connected" },
-            { id: 2, name: "خالد عبد الله", phone: "0922334455", speed: "16 ميجا", amount: 250000, currency: "SYP", status: "connected" },
-            { id: 3, name: "سامر إبراهيم", phone: "0933445566", speed: "4 ميجا", amount: 10, currency: "USD", status: "disconnected" },
-            { id: 4, name: "محمود حسن", phone: "0944556677", speed: "12 ميجا", amount: 200000, currency: "SYP", status: "disconnected" }
+            { id: 1, name: "أحمد محمد العلي", phone: "0912345678", speed: "8 ميجا", amount: 15, currency: "USD", status: "connected", payments: [] },
+            { id: 2, name: "خالد عبد الله", phone: "0922334455", speed: "16 ميجا", amount: 250000, currency: "SYP", status: "connected", payments: [] },
+            { id: 3, name: "سامر إبراهيم", phone: "0933445566", speed: "4 ميجا", amount: 10, currency: "USD", status: "disconnected", payments: [] },
+            { id: 4, name: "محمود حسن", phone: "0944556677", speed: "12 ميجا", amount: 200000, currency: "SYP", status: "disconnected", payments: [] }
         ];
 
-        /* ================== الحالة ================== */
         let subscribers = [];
+        let expenses = [];
+        let settings = { exchangeRate: 15000 };
         let searchQuery = '';
         let editingId = null;
         let excelFileHandle = null;
+        let _confirmResolver = null;
 
-        /* ================== أدوات عامة ================== */
         function escapeHTML(str) {
             const div = document.createElement('div');
             div.textContent = String(str);
             return div.innerHTML;
         }
-
-        function saveSubscribers() {
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(subscribers)); }
-            catch (e) { console.warn('تعذّر الحفظ:', e); }
-        }
-
-        function loadSubscribers() {
+        function saveAll() {
             try {
-                const raw = localStorage.getItem(STORAGE_KEY);
-                if (raw) {
-                    const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed)) return parsed;
-                }
-            } catch (e) { console.warn('بيانات تالفة:', e); }
-            return DEFAULT_SUBSCRIBERS.slice();
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(subscribers));
+                localStorage.setItem(EXPENSES_KEY, JSON.stringify(expenses));
+                localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+            } catch(e) { console.warn('حفظ فشل:', e); }
         }
-
+        function loadAll() {
+            try {
+                const s = localStorage.getItem(STORAGE_KEY);
+                if (s) { const p = JSON.parse(s); if (Array.isArray(p)) subscribers = p; }
+                const e = localStorage.getItem(EXPENSES_KEY);
+                if (e) { const p = JSON.parse(e); if (Array.isArray(p)) expenses = p; }
+                const st = localStorage.getItem(SETTINGS_KEY);
+                if (st) { const p = JSON.parse(st); if (p && typeof p === 'object') settings = p; }
+            } catch(e) { console.warn('تحميل فشل:', e); }
+        }
         function showToast(msg, type = 'info') {
             const t = document.createElement('div');
             t.className = `toast toast-${type}`;
@@ -685,12 +1074,39 @@
             }, 2500);
         }
 
-        /* ================== 📅 دوال التاريخ ================== */
+        /* ========== نافذة التأكيد المخصصة ========== */
+        function customConfirm(message, type = 'warning') {
+            return new Promise((resolve) => {
+                _confirmResolver = resolve;
+                const icons = { warning: '⚠️', danger: '🗑️', info: '❓' };
+                document.getElementById('confirm-icon').textContent = icons[type] || '⚠️';
+                document.getElementById('confirm-message').textContent = message;
+                const yesBtn = document.getElementById('confirm-yes-btn');
+                if (type === 'danger') {
+                    yesBtn.className = 'btn-submit btn-danger';
+                    yesBtn.textContent = 'نعم، احذف';
+                } else if (type === 'warning') {
+                    yesBtn.className = 'btn-submit btn-danger';
+                    yesBtn.textContent = 'تأكيد';
+                } else {
+                    yesBtn.className = 'btn-submit';
+                    yesBtn.textContent = 'حسناً';
+                }
+                document.getElementById('confirm-modal').classList.add('active');
+            });
+        }
+        function resolveConfirm(result) {
+            document.getElementById('confirm-modal').classList.remove('active');
+            if (_confirmResolver) {
+                _confirmResolver(result);
+                _confirmResolver = null;
+            }
+        }
+
         function todayISO() {
             const d = new Date();
             return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
         }
-
         function addMonths(dateStr, months) {
             const [y, m, d] = dateStr.split('-').map(Number);
             const target = new Date(y, m - 1 + months, 1);
@@ -698,60 +1114,89 @@
             target.setDate(Math.min(d, lastDay));
             return `${target.getFullYear()}-${String(target.getMonth()+1).padStart(2,'0')}-${String(target.getDate()).padStart(2,'0')}`;
         }
-
         function daysRemaining(sub) {
             if (!sub.expiryDate) return null;
             const today = new Date(); today.setHours(0,0,0,0);
             const exp = new Date(sub.expiryDate + 'T00:00:00');
             return Math.ceil((exp - today) / (1000 * 60 * 60 * 24));
         }
-
         function isExpired(sub) {
             const rem = daysRemaining(sub);
             return rem !== null && rem < 0;
         }
 
-        /* ✅ شارة الأيام المتبقية بجانب الاسم */
+        function calcDebt(sub) {
+            if (!sub.startDate || !sub.amount) return 0;
+            const payments = sub.payments || [];
+            let lastDate = sub.startDate;
+            if (payments.length > 0) {
+                const sorted = [...payments].sort((a,b) => a.date.localeCompare(b.date));
+                lastDate = sorted[sorted.length - 1].date;
+            }
+            const last = new Date(lastDate + 'T00:00:00');
+            const today = new Date(); today.setHours(0,0,0,0);
+            let months = (today.getFullYear() - last.getFullYear()) * 12 + (today.getMonth() - last.getMonth());
+            if (today.getDate() < last.getDate()) months--;
+            months = Math.max(0, months);
+            return months * Number(sub.amount);
+        }
+
+        function monthsDue(sub) {
+            if (!sub.startDate || !sub.amount) return 0;
+            const payments = sub.payments || [];
+            let lastDate = sub.startDate;
+            if (payments.length > 0) {
+                const sorted = [...payments].sort((a,b) => a.date.localeCompare(b.date));
+                lastDate = sorted[sorted.length - 1].date;
+            }
+            const last = new Date(lastDate + 'T00:00:00');
+            const today = new Date(); today.setHours(0,0,0,0);
+            let months = (today.getFullYear() - last.getFullYear()) * 12 + (today.getMonth() - last.getMonth());
+            if (today.getDate() < last.getDate()) months--;
+            return Math.max(0, months);
+        }
+        function hasDebt(sub) { return calcDebt(sub) > 0; }
+
+        function genReceiptNo(dateStr) {
+            const [y, m] = dateStr.split('-');
+            const prefix = `${y}${m}`;
+            const allReceipts = subscribers.flatMap(s => (s.payments || []).map(p => p.receiptNo));
+            const thisMonth = allReceipts.filter(r => r && r.startsWith(prefix));
+            const nextNum = thisMonth.length + 1;
+            return `${prefix}-${String(nextNum).padStart(4, '0')}`;
+        }
+
         function daysBadgeInline(sub) {
             if (!sub.expiryDate) return '';
             const rem = daysRemaining(sub);
-            if (rem < 0) {
-                return `<span class="days-badge" style="background:rgba(239,68,68,0.25);color:#f87171">⛔ ${Math.abs(rem)}ي</span>`;
-            }
-            if (rem === 0) {
-                return `<span class="days-badge" style="background:rgba(245,158,11,0.3);color:#f59e0b">⏰ اليوم</span>`;
-            }
-            if (rem <= 3) {
-                return `<span class="days-badge" style="background:rgba(245,158,11,0.3);color:#f59e0b">⏰ ${rem}ي</span>`;
-            }
+            if (rem < 0) return `<span class="days-badge" style="background:rgba(239,68,68,0.25);color:#f87171">⛔ ${Math.abs(rem)}ي</span>`;
+            if (rem === 0) return `<span class="days-badge" style="background:rgba(245,158,11,0.3);color:#f59e0b">⏰ اليوم</span>`;
+            if (rem <= 3) return `<span class="days-badge" style="background:rgba(245,158,11,0.3);color:#f59e0b">⏰ ${rem}ي</span>`;
             return `<span class="days-badge" style="background:rgba(16,185,129,0.25);color:#10b981">📅 ${rem}ي</span>`;
         }
+        function debtBadge(sub) {
+            const debt = calcDebt(sub);
+            if (debt <= 0) return '';
+            const sym = sub.currency === 'USD' ? '$' : 'ل.س';
+            return `<span class="debt-badge">💰 ${debt.toLocaleString()}${sym}</span>`;
+        }
 
-        /* ================== 🔴 الفحص التلقائي للانتهاء ================== */
         async function checkExpirations() {
             let changed = false;
-            const expiredNames = [];
-
+            const names = [];
             subscribers.forEach(sub => {
                 if (sub.status === 'connected' && isExpired(sub)) {
                     sub.status = 'disconnected';
                     changed = true;
-                    expiredNames.push(sub.name);
+                    names.push(sub.name);
                 }
             });
-
             if (changed) {
-                saveSubscribers();
-                render();
-                await autoSaveExcel();
-                const msg = expiredNames.length === 1
-                    ? `⛔ تم قطع اتصال: ${expiredNames[0]} (انتهى اشتراكه)`
-                    : `⛔ تم قطع اتصال ${expiredNames.length} مشتركين (انتهت اشتراكاتهم)`;
-                showToast(msg, 'warning');
+                saveAll(); render(); await autoSaveExcel();
+                showToast(names.length === 1 ? `⛔ قطع اتصال: ${names[0]}` : `⛔ قطع ${names.length} مشتركين`, 'warning');
             }
         }
 
-        /* ================== IndexedDB لمرجع Excel ================== */
         function openDB() {
             return new Promise((resolve, reject) => {
                 const req = indexedDB.open(DB_NAME, 1);
@@ -763,49 +1208,74 @@
         async function saveHandleToDB(handle) {
             try {
                 const db = await openDB();
-                await new Promise((resolve, reject) => {
+                await new Promise((res, rej) => {
                     const tx = db.transaction(DB_STORE, 'readwrite');
                     tx.objectStore(DB_STORE).put(handle, 'excel');
-                    tx.oncomplete = resolve;
-                    tx.onerror = () => reject(tx.error);
+                    tx.oncomplete = res; tx.onerror = () => rej(tx.error);
                 });
-            } catch (e) { console.warn('IndexedDB save failed:', e); }
+            } catch(e) {}
         }
         async function loadHandleFromDB() {
             try {
                 const db = await openDB();
-                return await new Promise((resolve, reject) => {
+                return await new Promise((res, rej) => {
                     const tx = db.transaction(DB_STORE, 'readonly');
                     const req = tx.objectStore(DB_STORE).get('excel');
-                    req.onsuccess = () => resolve(req.result);
-                    req.onerror = () => reject(req.error);
+                    req.onsuccess = () => res(req.result);
+                    req.onerror = () => rej(req.error);
                 });
-            } catch (e) { return null; }
+            } catch(e) { return null; }
         }
 
-        /* ================== Excel ================== */
         function buildWorkbook() {
-            const rows = subscribers.map((s, i) => ({
-                '#': i + 1,
-                'الاسم الثلاثي': s.name,
-                'رقم الهاتف': s.phone,
-                'السرعة': s.speed,
-                'المبلغ': s.amount,
-                'العملة': s.currency === 'USD' ? 'دولار ($)' : 'ليرة سورية (ل.س)',
-                'حالة الاتصال': s.status === 'connected' ? 'متصل' : 'مقطوع',
+            const subRows = subscribers.map((s, i) => ({
+                '#': i + 1, 'الاسم': s.name, 'الهاتف': s.phone,
+                'السرعة': s.speed, 'الاشتراك الشهري': s.amount,
+                'العملة': s.currency === 'USD' ? '$' : 'ل.س',
+                'الحالة': s.status === 'connected' ? 'متصل' : 'مقطوع',
                 'تاريخ البدء': s.startDate || '—',
                 'تاريخ الانتهاء': s.expiryDate || '—',
-                'المدة (أشهر)': s.durationMonths || '—',
-                'المتبقي (أيام)': s.expiryDate ? daysRemaining(s) : '—'
+                'المتبقي (أيام)': s.expiryDate ? daysRemaining(s) : '—',
+                'الدين': calcDebt(s), 'أشهر مستحقة': monthsDue(s)
             }));
-            const ws = XLSX.utils.json_to_sheet(rows);
-            ws['!cols'] = [
-                { wch: 5 }, { wch: 25 }, { wch: 15 }, { wch: 10 }, { wch: 12 },
-                { wch: 18 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }
-            ];
+            const ws1 = XLSX.utils.json_to_sheet(subRows);
+            ws1['!cols'] = [{wch:5},{wch:25},{wch:15},{wch:10},{wch:12},{wch:8},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12}];
+
+            const payRows = [];
+            subscribers.forEach(s => {
+                (s.payments || []).forEach(p => {
+                    payRows.push({
+                        'رقم الإيصال': p.receiptNo, 'المشترك': s.name,
+                        'المبلغ': p.amount, 'العملة': p.currency === 'USD' ? '$' : 'ل.س',
+                        'التاريخ': p.date, 'طريقة الدفع': p.method, 'ملاحظات': p.note || ''
+                    });
+                });
+            });
+            const ws2 = XLSX.utils.json_to_sheet(payRows);
+            ws2['!cols'] = [{wch:15},{wch:25},{wch:12},{wch:8},{wch:12},{wch:18},{wch:20}];
+
+            const expRows = expenses.map(e => ({
+                'الفئة': e.category, 'المبلغ': e.amount,
+                'العملة': e.currency === 'USD' ? '$' : 'ل.س',
+                'التاريخ': e.date, 'ملاحظات': e.note || ''
+            }));
+            const ws3 = XLSX.utils.json_to_sheet(expRows);
+            ws3['!cols'] = [{wch:15},{wch:12},{wch:8},{wch:12},{wch:20}];
+
+            const debtors = subscribers.filter(s => calcDebt(s) > 0).map(s => ({
+                'الاسم': s.name, 'الهاتف': s.phone,
+                'الدين': calcDebt(s), 'العملة': s.currency === 'USD' ? '$' : 'ل.س',
+                'أشهر متأخرة': monthsDue(s)
+            }));
+            const ws4 = XLSX.utils.json_to_sheet(debtors);
+            ws4['!cols'] = [{wch:25},{wch:15},{wch:12},{wch:8},{wch:12}];
+
             const wb = XLSX.utils.book_new();
             wb.Workbook = { Views: [{ RTL: true }] };
-            XLSX.utils.book_append_sheet(wb, ws, 'المشتركين');
+            XLSX.utils.book_append_sheet(wb, ws1, 'المشتركين');
+            XLSX.utils.book_append_sheet(wb, ws2, 'الدفعات');
+            XLSX.utils.book_append_sheet(wb, ws3, 'المصروفات');
+            XLSX.utils.book_append_sheet(wb, ws4, 'الديون');
             return wb;
         }
 
@@ -814,10 +1284,8 @@
             try {
                 if (excelFileHandle.queryPermission) {
                     let perm = await excelFileHandle.queryPermission({ mode: 'readwrite' });
-                    if (perm !== 'granted') {
-                        perm = await excelFileHandle.requestPermission({ mode: 'readwrite' });
-                        if (perm !== 'granted') return false;
-                    }
+                    if (perm !== 'granted') perm = await excelFileHandle.requestPermission({ mode: 'readwrite' });
+                    if (perm !== 'granted') return false;
                 }
                 const wb = buildWorkbook();
                 const data = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
@@ -825,70 +1293,47 @@
                 await writable.write(data);
                 await writable.close();
                 return true;
-            } catch (e) { console.error('Excel write failed:', e); return false; }
+            } catch(e) { console.error(e); return false; }
         }
-
         async function autoSaveExcel() {
             if (!excelFileHandle) return;
             const ok = await writeToExcelFile();
-            if (ok) showToast('✅ تم تحديث ملف Excel', 'success');
+            if (ok) showToast('✅ تم تحديث Excel', 'success');
         }
-
         async function linkExcelFile() {
-            if (!window.isSecureContext) {
-                alert('⚠️ الصفحة غير آمنة (file://)\n\nافتح الصفحة عبر سيرفر محلي أو استخدم زر 💾');
-                return;
-            }
-            if (typeof window.showSaveFilePicker !== 'function') {
-                alert('⚠️ المتصفح لا يدعم الحفظ التلقائي\n\nاستخدم Chrome أو Edge، أو زر 💾');
-                return;
-            }
+            if (!window.isSecureContext) { alert('⚠️ افتح الصفحة عبر سيرفر محلي'); return; }
+            if (typeof window.showSaveFilePicker !== 'function') { alert('⚠️ استخدم Chrome/Edge'); return; }
             try {
                 excelFileHandle = await window.showSaveFilePicker({
-                    suggestedName: 'SpaceNet-Subscribers.xlsx',
-                    types: [{ description: 'Excel Workbook', accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] } }]
+                    suggestedName: 'SpaceNet-Accounting.xlsx',
+                    types: [{ description: 'Excel', accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] } }]
                 });
                 await saveHandleToDB(excelFileHandle);
                 const ok = await writeToExcelFile();
                 if (ok) {
                     document.getElementById('excel-link-btn').classList.add('linked');
-                    showToast('✅ تم ربط الملف - سيُحدَّث تلقائياً', 'success');
+                    showToast('✅ ربط Excel ناجح', 'success');
                 }
-            } catch (e) {
-                if (e.name !== 'AbortError') {
-                    console.error('Link failed:', e);
-                    alert('❌ تعذّر ربط الملف: ' + e.message);
-                }
-            }
+            } catch(e) { if (e.name !== 'AbortError') alert('❌ ' + e.message); }
         }
-
         function downloadExcel() {
             try {
                 const wb = buildWorkbook();
-                const stamp = new Date().toISOString().slice(0, 10);
-                XLSX.writeFile(wb, `SpaceNet-Subscribers-${stamp}.xlsx`);
-                showToast('✅ تم تحميل ملف Excel', 'success');
-            } catch (e) {
-                console.error(e);
-                showToast('❌ تعذّر إنشاء Excel', 'error');
-            }
+                XLSX.writeFile(wb, `SpaceNet-${new Date().toISOString().slice(0,10)}.xlsx`);
+                showToast('✅ تم التحميل', 'success');
+            } catch(e) { showToast('❌ فشل', 'error'); }
         }
 
-        /* ================== البحث ================== */
-        function handleSearch(e) {
-            searchQuery = e.target.value.trim().toLowerCase();
-            render();
-        }
+        function handleSearch(e) { searchQuery = e.target.value.trim().toLowerCase(); render(); }
 
-        /* ================== الرسم البياني ================== */
-        function updateCharts(connected, disconnected, paidUSD, unpaidUSD, paidSYP, unpaidSYP) {
-            const total = connected + disconnected;
-            const pct = total > 0 ? (connected / total) * 100 : 50;
+        function updateCharts(conn, disc, paidUSD, unpaidUSD, paidSYP, unpaidSYP) {
+            const total = conn + disc;
+            const pct = total > 0 ? (conn / total) * 100 : 50;
             const pie = document.getElementById('pie-chart');
             if (total === 0) pie.style.background = '#1e3a6e';
             else pie.style.background = `conic-gradient(#10b981 0% ${pct}%, #ef4444 ${pct}% 100%)`;
-            document.getElementById('legend-connected').textContent = connected;
-            document.getElementById('legend-disconnected').textContent = disconnected;
+            document.getElementById('legend-connected').textContent = conn;
+            document.getElementById('legend-disconnected').textContent = disc;
 
             const totalUSD = paidUSD + unpaidUSD;
             const usdPct = totalUSD > 0 ? (paidUSD / totalUSD) * 100 : 0;
@@ -901,63 +1346,117 @@
             document.getElementById('bar-syp-val').textContent = `${paidSYP.toLocaleString()} / ${totalSYP.toLocaleString()} ل.س`;
         }
 
-        /* ================== العرض ================== */
+        function getFinancialStats() {
+            let collectedUSD = 0, collectedSYP = 0;
+            let monthUSD = 0, monthSYP = 0;
+            let monthlyTotalUSD = 0, monthlyTotalSYP = 0;
+
+            const now = new Date();
+            const currentMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+
+            subscribers.forEach(sub => {
+                (sub.payments || []).forEach(p => {
+                    if (p.currency === 'USD') collectedUSD += Number(p.amount);
+                    else collectedSYP += Number(p.amount);
+                    if (p.date && p.date.startsWith(currentMonth)) {
+                        if (p.currency === 'USD') monthUSD += Number(p.amount);
+                        else monthSYP += Number(p.amount);
+                    }
+                });
+                if (sub.amount) {
+                    if (sub.currency === 'USD') monthlyTotalUSD += Number(sub.amount);
+                    else monthlyTotalSYP += Number(sub.amount);
+                }
+            });
+
+            return { collectedUSD, collectedSYP, monthUSD, monthSYP, monthlyTotalUSD, monthlyTotalSYP, currentMonth };
+        }
+
+        function getExpensesStats() {
+            const now = new Date();
+            const currentMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+            let monthUSD = 0, monthSYP = 0;
+            expenses.forEach(e => {
+                if (e.date && e.date.startsWith(currentMonth)) {
+                    if (e.currency === 'USD') monthUSD += Number(e.amount);
+                    else monthSYP += Number(e.amount);
+                }
+            });
+            return { monthUSD, monthSYP };
+        }
+
+        function updateFinanceDashboard() {
+            const fs = getFinancialStats();
+            const es = getExpensesStats();
+
+            document.getElementById('fin-collected').innerHTML =
+                `<span>$${fs.collectedUSD.toLocaleString()}</span><span class="finance-sub">${fs.collectedSYP.toLocaleString()} ل.س</span>`;
+            document.getElementById('fin-month').innerHTML =
+                `<span>$${fs.monthUSD.toLocaleString()}</span><span class="finance-sub">${fs.monthSYP.toLocaleString()} ل.س</span>`;
+            document.getElementById('fin-exp-month').innerHTML =
+                `<span>$${es.monthUSD.toLocaleString()}</span><span class="finance-sub">${es.monthSYP.toLocaleString()} ل.س</span>`;
+
+            const rateLabel = document.getElementById('rate-label');
+            if (rateLabel) rateLabel.textContent = `1$ = ${settings.exchangeRate.toLocaleString()} ل.س`;
+        }
+
         function render() {
-            let totalConnected = 0, totalDisconnected = 0;
+            let connCount = 0, discCount = 0;
             let totalUSD = 0, totalSYP = 0, unpaidUSD = 0, unpaidSYP = 0;
 
             subscribers.forEach(sub => {
                 if (sub.status === 'connected') {
-                    totalConnected++;
+                    connCount++;
                     if (sub.currency === 'USD') totalUSD += Number(sub.amount);
                     if (sub.currency === 'SYP') totalSYP += Number(sub.amount);
                 } else {
-                    totalDisconnected++;
+                    discCount++;
                     if (sub.currency === 'USD') unpaidUSD += Number(sub.amount);
                     if (sub.currency === 'SYP') unpaidSYP += Number(sub.amount);
                 }
             });
 
-            document.getElementById('connected-count').textContent = totalConnected;
-            document.getElementById('disconnected-count').textContent = totalDisconnected;
-            document.getElementById('total-usd').textContent = `$${totalUSD.toLocaleString()}`;
-            document.getElementById('total-syp').textContent = `${totalSYP.toLocaleString()} ل.س`;
-            document.getElementById('unpaid-usd').textContent = `$${unpaidUSD.toLocaleString()}`;
-            document.getElementById('unpaid-syp').textContent = `${unpaidSYP.toLocaleString()} ل.س`;
+            const fs = getFinancialStats();
+            document.getElementById('connected-count').textContent = connCount;
+            document.getElementById('disconnected-count').textContent = discCount;
+            document.getElementById('monthly-total').textContent =
+                `$${fs.monthlyTotalUSD.toLocaleString()} | ${fs.monthlyTotalSYP.toLocaleString()} ل.س`;
+
+            updateFinanceDashboard();
 
             const filtered = subscribers.filter(sub => {
                 if (!searchQuery) return true;
                 return sub.name.toLowerCase().includes(searchQuery) || sub.phone.includes(searchQuery);
             });
 
-            const connectedList = document.getElementById('connected-list');
-            const disconnectedList = document.getElementById('disconnected-list');
-            connectedList.innerHTML = '';
-            disconnectedList.innerHTML = '';
+            const connList = document.getElementById('connected-list');
+            const discList = document.getElementById('disconnected-list');
+            connList.innerHTML = '';
+            discList.innerHTML = '';
 
-            let visibleConnected = 0, visibleDisconnected = 0;
+            let vConn = 0, vDisc = 0;
 
             filtered.forEach(sub => {
                 const card = document.createElement('div');
                 card.onclick = () => showDetails(sub.id);
-
                 const rem = daysRemaining(sub);
                 const expiring = rem !== null && rem >= 0 && rem <= 3;
+                const debtor = hasDebt(sub);
 
-                if (sub.status === 'connected') {
-                    visibleConnected++;
-                    card.className = 'subscriber-card' + (expiring ? ' expiring' : '');
-                } else {
-                    visibleDisconnected++;
-                    card.className = 'subscriber-card disconnected';
-                }
+                let cls = 'subscriber-card';
+                if (sub.status === 'disconnected') cls += ' disconnected';
+                else if (expiring) cls += ' expiring';
+                if (debtor) cls += ' debtor';
 
-                /* ✅ الاسم + شارة الأيام في سطر واحد */
+                card.className = cls;
+                if (sub.status === 'connected') vConn++; else vDisc++;
+
                 card.innerHTML = `
                     <div class="sub-info">
                         <h4>
                             <span class="sub-name">${escapeHTML(sub.name)}</span>
                             ${daysBadgeInline(sub)}
+                            ${debtBadge(sub)}
                         </h4>
                         <p>${escapeHTML(sub.phone)}</p>
                     </div>
@@ -966,25 +1465,24 @@
                         <div class="sub-speed">${escapeHTML(sub.speed)}</div>
                     </div>
                 `;
-                (sub.status === 'connected' ? connectedList : disconnectedList).appendChild(card);
+                (sub.status === 'connected' ? connList : discList).appendChild(card);
             });
 
-            if (visibleConnected === 0) connectedList.innerHTML = '<p class="empty-state">لا يوجد مشتركون</p>';
-            if (visibleDisconnected === 0) disconnectedList.innerHTML = '<p class="empty-state">لا يوجد مشتركون</p>';
+            if (vConn === 0) connList.innerHTML = '<p class="empty-state">لا يوجد مشتركون</p>';
+            if (vDisc === 0) discList.innerHTML = '<p class="empty-state">لا يوجد مشتركون</p>';
 
-            document.getElementById('connected-badge').textContent = visibleConnected;
-            document.getElementById('disconnected-badge').textContent = visibleDisconnected;
+            document.getElementById('connected-badge').textContent = vConn;
+            document.getElementById('disconnected-badge').textContent = vDisc;
 
-            updateCharts(totalConnected, totalDisconnected, totalUSD, unpaidUSD, totalSYP, unpaidSYP);
+            updateCharts(connCount, discCount, totalUSD, unpaidUSD, totalSYP, unpaidSYP);
         }
 
-        /* ================== الدخول ================== */
         function handleLogin(e) {
             e.preventDefault();
-            const user = document.getElementById('login-user').value.trim();
-            const pass = document.getElementById('login-pass').value;
+            const u = document.getElementById('login-user').value.trim();
+            const p = document.getElementById('login-pass').value;
             const err = document.getElementById('login-error');
-            if (user === LOGIN_USER && pass === LOGIN_PASS) {
+            if (u === LOGIN_USER && p === LOGIN_PASS) {
                 localStorage.setItem(SESSION_KEY, 'true');
                 document.getElementById('login-overlay').classList.remove('active');
                 document.querySelector('.fab').style.display = '';
@@ -992,51 +1490,55 @@
                 document.getElementById('login-user').value = '';
                 document.getElementById('login-pass').value = '';
             } else {
-                err.textContent = '❌ بيانات الدخول غير صحيحة';
+                err.textContent = '❌ بيانات غير صحيحة';
             }
         }
-
-        function logout() {
-            if (!confirm('هل تريد تسجيل الخروج؟')) return;
+        async function logout() {
+            const ok = await customConfirm('هل تريد تسجيل الخروج؟', 'info');
+            if (!ok) return;
             localStorage.removeItem(SESSION_KEY);
             location.reload();
         }
 
-        /* ================== الثيم ================== */
         function updateThemeBtn() {
             const btn = document.getElementById('theme-btn');
             if (btn) btn.textContent = document.body.classList.contains('light-mode') ? '🌙' : '☀️';
         }
         function toggleTheme() {
             document.body.classList.toggle('light-mode');
-            const isLight = document.body.classList.contains('light-mode');
-            localStorage.setItem(THEME_KEY, isLight ? 'light' : 'dark');
+            localStorage.setItem(THEME_KEY, document.body.classList.contains('light-mode') ? 'light' : 'dark');
             updateThemeBtn();
         }
 
-        /* ================== النوافذ ================== */
-        function updateExpiryPreview() {
-            const start = document.getElementById('start-date').value;
-            const months = Number(document.getElementById('duration').value);
-            if (start && months) {
-                document.getElementById('expiry-date').value = addMonths(start, months);
-            } else {
-                document.getElementById('expiry-date').value = '';
+        function openExchangeRateModal() {
+            document.getElementById('rate-value').value = settings.exchangeRate;
+            document.getElementById('rate-modal').classList.add('active');
+        }
+        function closeExchangeRateModal() { document.getElementById('rate-modal').classList.remove('active'); }
+        function saveExchangeRate(e) {
+            e.preventDefault();
+            const v = Number(document.getElementById('rate-value').value);
+            if (v > 0) {
+                settings.exchangeRate = v;
+                saveAll(); closeExchangeRateModal(); updateFinanceDashboard();
+                showToast('✅ تم حفظ سعر الصرف', 'success');
             }
         }
 
+        function updateExpiryPreview() {
+            const s = document.getElementById('start-date').value;
+            const m = Number(document.getElementById('duration').value);
+            document.getElementById('expiry-date').value = (s && m) ? addMonths(s, m) : '';
+        }
         function openAddModal(id = null) {
             editingId = id;
-            const title = document.getElementById('add-modal-title');
-            const submit = document.getElementById('add-submit-btn');
             const form = document.getElementById('add-form');
             form.reset();
-
             if (id) {
                 const sub = subscribers.find(s => s.id === id);
                 if (!sub) return;
-                title.textContent = '✏️ تعديل بيانات المشترك';
-                submit.textContent = 'حفظ التعديلات';
+                document.getElementById('add-modal-title').textContent = '✏️ تعديل مشترك';
+                document.getElementById('add-submit-btn').textContent = 'حفظ التعديلات';
                 document.getElementById('fullname').value = sub.name;
                 document.getElementById('phone').value = sub.phone;
                 document.getElementById('speed').value = sub.speed;
@@ -1047,15 +1549,14 @@
                 document.getElementById('duration').value = sub.durationMonths || 1;
                 updateExpiryPreview();
             } else {
-                title.textContent = 'إضافة مشترك جديد';
-                submit.textContent = 'حفظ المشترك';
+                document.getElementById('add-modal-title').textContent = 'إضافة مشترك جديد';
+                document.getElementById('add-submit-btn').textContent = 'حفظ المشترك';
                 document.getElementById('start-date').value = todayISO();
                 document.getElementById('duration').value = '1';
                 updateExpiryPreview();
             }
             document.getElementById('add-modal').classList.add('active');
         }
-
         function closeAddModal() {
             document.getElementById('add-modal').classList.remove('active');
             document.getElementById('add-form').reset();
@@ -1063,7 +1564,6 @@
         }
         function closeDetailsModal() { document.getElementById('details-modal').classList.remove('active'); }
 
-        /* ================== الإضافة / التعديل ================== */
         async function handleAddSubscriber(e) {
             e.preventDefault();
             const startDate = document.getElementById('start-date').value || null;
@@ -1077,187 +1577,486 @@
                 amount: Number(document.getElementById('amount').value),
                 currency: document.getElementById('currency').value,
                 status: document.getElementById('status').value,
-                startDate,
-                durationMonths,
-                expiryDate
+                startDate, durationMonths, expiryDate
             };
 
             if (editingId) {
                 const sub = subscribers.find(s => s.id === editingId);
                 if (sub) Object.assign(sub, data);
             } else {
-                subscribers.push({ id: Date.now(), ...data });
+                subscribers.push({ id: Date.now(), ...data, payments: [] });
             }
 
-            saveSubscribers();
-            render();
-            closeAddModal();
+            saveAll(); render(); closeAddModal();
             await autoSaveExcel();
         }
 
-        /* ================== التفاصيل ================== */
         function showDetails(id) {
             const sub = subscribers.find(s => s.id === id);
             if (!sub) return;
 
             const rem = daysRemaining(sub);
+            const debt = calcDebt(sub);
+            const mDue = monthsDue(sub);
+            const sym = sub.currency === 'USD' ? 'دولار' : 'ل.س';
+            const symShort = sub.currency === 'USD' ? '$' : 'ل.س';
+
             let expiryInfo = '';
             if (sub.expiryDate) {
-                let remColor = '#10b981';
-                let remText = `${rem} يوم`;
-                if (rem < 0) { remColor = '#f87171'; remText = `منتهي منذ ${Math.abs(rem)} يوم`; }
-                else if (rem === 0) { remColor = '#f59e0b'; remText = 'ينتهي اليوم'; }
-                else if (rem <= 3) { remColor = '#f59e0b'; remText = `${rem} يوم`; }
-
+                let c = '#10b981', t = `${rem} يوم`;
+                if (rem < 0) { c = '#f87171'; t = `منتهي منذ ${Math.abs(rem)} يوم`; }
+                else if (rem === 0) { c = '#f59e0b'; t = 'ينتهي اليوم'; }
+                else if (rem <= 3) { c = '#f59e0b'; t = `${rem} يوم`; }
                 expiryInfo = `
-                    <div class="detail-row">
-                        <span class="detail-label">تاريخ البدء:</span>
-                        <span>${sub.startDate || '—'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">تاريخ الانتهاء:</span>
-                        <span>${sub.expiryDate}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">المتبقي:</span>
-                        <span style="color:${remColor}; font-weight:bold;">${remText}</span>
-                    </div>
+                    <div class="detail-row"><span class="detail-label">تاريخ البدء:</span><span>${sub.startDate || '—'}</span></div>
+                    <div class="detail-row"><span class="detail-label">تاريخ الانتهاء:</span><span>${sub.expiryDate}</span></div>
+                    <div class="detail-row"><span class="detail-label">المتبقي:</span><span style="color:${c};font-weight:bold;">${t}</span></div>
                 `;
             }
 
-            const expired = isExpired(sub);
-            const renewBtn = expired ? `
-                <button class="btn-submit" style="background:#10b981; margin-top:16px;" onclick="renewSubscription(${sub.id}, 1)">
-                    🔄 تجديد شهر (من اليوم)
-                </button>` : '';
+            const payments = sub.payments || [];
+            const totalPaid = payments.reduce((sum, p) => sum + Number(p.amount), 0);
+
+            let debtInfo = '';
+            if (debt > 0) {
+                debtInfo = `
+                    <div class="detail-row" style="background:rgba(220,38,38,0.15);padding:10px;border-radius:6px;margin:8px 0;">
+                        <span class="detail-label" style="color:#fca5a5;">💰 الدين المستحق:</span>
+                        <span style="color:#fca5a5;font-weight:bold;">${debt.toLocaleString()} ${symShort} (${mDue} شهر)</span>
+                    </div>`;
+            } else {
+                debtInfo = `
+                    <div class="detail-row" style="background:rgba(16,185,129,0.1);padding:10px;border-radius:6px;margin:8px 0;">
+                        <span class="detail-label" style="color:#6ee7b7;">✅ لا يوجد دين</span>
+                        <span style="color:#6ee7b7;">مدفوع</span>
+                    </div>`;
+            }
+
+            const paymentsList = payments.length > 0 ? payments.map(p => `
+                <div class="payment-item">
+                    <div class="payment-info">
+                        <strong>${p.amount} ${p.currency === 'USD' ? '$' : 'ل.س'}</strong>
+                        <small>${p.date} • ${p.method}</small>
+                        <div class="payment-receipt">#${p.receiptNo}</div>
+                    </div>
+                    <div class="payment-actions">
+                        <button class="mini-btn" title="طباعة إيصال" onclick="event.stopPropagation(); printReceipt(${sub.id}, '${p.receiptNo}')">🖨️</button>
+                        <button class="mini-btn danger" title="حذف" onclick="event.stopPropagation(); deletePayment(${sub.id}, '${p.receiptNo}')">🗑️</button>
+                    </div>
+                </div>
+            `).join('') : '<p class="empty-state">لا توجد دفعات</p>';
 
             document.getElementById('details-content').innerHTML = `
                 <div class="detail-row"><span class="detail-label">الاسم:</span><span>${escapeHTML(sub.name)}</span></div>
                 <div class="detail-row"><span class="detail-label">الهاتف:</span><span>${escapeHTML(sub.phone)}</span></div>
                 <div class="detail-row"><span class="detail-label">السرعة:</span><span>${escapeHTML(sub.speed)}</span></div>
-                <div class="detail-row"><span class="detail-label">الاشتراك:</span><span>${sub.amount} ${sub.currency === 'USD' ? 'دولار' : 'ل.س'}</span></div>
+                <div class="detail-row"><span class="detail-label">الاشتراك الشهري:</span><span>${sub.amount} ${sym}</span></div>
                 <div class="detail-row">
                     <span class="detail-label">الحالة:</span>
-                    <span style="color: ${sub.status === 'connected' ? '#10b981' : '#f87171'}">
+                    <span style="color:${sub.status === 'connected' ? '#10b981' : '#f87171'}">
                         ${sub.status === 'connected' ? 'متصل' : 'مقطوع'}
                     </span>
                 </div>
                 ${expiryInfo}
-                ${renewBtn}
-                <button class="btn-submit" style="background: #0284c7; margin-top: 10px;" onclick="closeDetailsModal(); openAddModal(${sub.id})">
-                    ✏️ تعديل البيانات
-                </button>
-                <button class="btn-submit" style="background: ${sub.status === 'connected' ? '#ef4444' : '#10b981'};" onclick="toggleStatus(${sub.id})">
+                ${debtInfo}
+
+                <div class="payments-section">
+                    <div class="payments-title">
+                        <span>💵 سجل الدفعات (${payments.length})</span>
+                        <small style="color:#10b981;">إجمالي: ${totalPaid.toLocaleString()} ${symShort}</small>
+                    </div>
+                    <button class="btn-submit btn-success" onclick="event.stopPropagation(); openPaymentModal(${sub.id})" style="margin-bottom:8px;">
+                        + تسجيل دفعة جديدة
+                    </button>
+                    <div class="payments-list">
+                        ${paymentsList}
+                    </div>
+                </div>
+
+                <button class="btn-submit" style="background:#0284c7;margin-top:12px;" onclick="closeDetailsModal(); openAddModal(${sub.id})">✏️ تعديل البيانات</button>
+                <button class="btn-submit" style="background:${sub.status === 'connected' ? '#ef4444' : '#10b981'};" onclick="toggleStatus(${sub.id})">
                     ${sub.status === 'connected' ? 'قطع الاتصال' : 'تفعيل الاتصال'}
                 </button>
-                <button class="btn-submit" style="background: #ef4444;" onclick="deleteSubscriber(${sub.id})">
-                    🗑️ إزالة المشترك نهائياً
-                </button>
+                <button class="btn-submit btn-danger" onclick="deleteSubscriber(${sub.id})">🗑️ حذف المشترك</button>
             `;
             document.getElementById('details-modal').classList.add('active');
         }
 
-        /* ================== تجديد ================== */
+        function openPaymentModal(subId) {
+            const sub = subscribers.find(s => s.id === subId);
+            if (!sub) return;
+            document.getElementById('pay-sub-id').value = subId;
+            document.getElementById('pay-sub-name').value = sub.name;
+            document.getElementById('pay-amount').value = sub.amount;
+            document.getElementById('pay-date').value = todayISO();
+            document.getElementById('pay-method').value = 'نقداً';
+            document.getElementById('pay-note').value = '';
+            document.getElementById('pay-receipt').value = genReceiptNo(todayISO());
+            document.getElementById('payment-modal').classList.add('active');
+        }
+        function closePaymentModal() { document.getElementById('payment-modal').classList.remove('active'); }
+
+        async function handleAddPayment(e) {
+            e.preventDefault();
+            const subId = Number(document.getElementById('pay-sub-id').value);
+            const sub = subscribers.find(s => s.id === subId);
+            if (!sub) return;
+
+            const date = document.getElementById('pay-date').value;
+            const payment = {
+                receiptNo: genReceiptNo(date),
+                date,
+                amount: Number(sub.amount),
+                currency: sub.currency,
+                method: document.getElementById('pay-method').value,
+                note: document.getElementById('pay-note').value.trim()
+            };
+
+            if (!sub.payments) sub.payments = [];
+            sub.payments.push(payment);
+
+            if (isExpired(sub)) {
+                sub.startDate = todayISO();
+                sub.durationMonths = 1;
+                sub.expiryDate = addMonths(sub.startDate, 1);
+                sub.status = 'connected';
+            }
+
+            saveAll(); closePaymentModal(); showDetails(subId); render();
+            await autoSaveExcel();
+            showToast(`✅ دفعة #${payment.receiptNo}`, 'success');
+        }
+        async function deletePayment(subId, receiptNo) {
+            const ok = await customConfirm('هل تريد حذف هذه الدفعة؟\nسيؤدي ذلك إلى زيادة الدين.', 'danger');
+            if (!ok) return;
+            const sub = subscribers.find(s => s.id === subId);
+            if (!sub) return;
+            sub.payments = (sub.payments || []).filter(p => p.receiptNo !== receiptNo);
+            saveAll(); showDetails(subId); render();
+            await autoSaveExcel();
+            showToast('🗑️ تم حذف الدفعة', 'warning');
+        }
+
+        function printReceipt(subId, receiptNo) {
+            const sub = subscribers.find(s => s.id === subId);
+            if (!sub) return;
+            const payment = (sub.payments || []).find(p => p.receiptNo === receiptNo);
+            if (!payment) return;
+
+            const sym = payment.currency === 'USD' ? 'دولار ($)' : 'ليرة سورية (ل.س)';
+            const html = `
+                <div style="padding:30px;font-family:'Segoe UI',Tahoma,sans-serif;direction:rtl;background:#fff;color:#000;width:600px;">
+                    <div style="text-align:center;border-bottom:3px solid #0284c7;padding-bottom:12px;margin-bottom:16px;">
+                        <h1 style="color:#0284c7;margin:0;font-size:1.8rem;">🌐 سبيس نت</h1>
+                        <p style="color:#666;margin:4px 0 0 0;font-size:0.9rem;">إيصال استلام دفعة</p>
+                    </div>
+                    <div style="text-align:center;background:#f0f9ff;padding:8px;border-radius:6px;margin-bottom:16px;">
+                        <strong style="color:#0369a1;font-size:1.1rem;">إيصال رقم: ${payment.receiptNo}</strong>
+                    </div>
+                    <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+                        <tr><td style="padding:8px;border-bottom:1px solid #eee;color:#666;">اسم المشترك:</td><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">${escapeHTML(sub.name)}</td></tr>
+                        <tr><td style="padding:8px;border-bottom:1px solid #eee;color:#666;">رقم الهاتف:</td><td style="padding:8px;border-bottom:1px solid #eee;">${escapeHTML(sub.phone)}</td></tr>
+                        <tr><td style="padding:8px;border-bottom:1px solid #eee;color:#666;">السرعة:</td><td style="padding:8px;border-bottom:1px solid #eee;">${escapeHTML(sub.speed)}</td></tr>
+                        <tr><td style="padding:8px;border-bottom:1px solid #eee;color:#666;">تاريخ الدفع:</td><td style="padding:8px;border-bottom:1px solid #eee;">${payment.date}</td></tr>
+                        <tr><td style="padding:8px;border-bottom:1px solid #eee;color:#666;">طريقة الدفع:</td><td style="padding:8px;border-bottom:1px solid #eee;">${payment.method}</td></tr>
+                        ${payment.note ? `<tr><td style="padding:8px;border-bottom:1px solid #eee;color:#666;">ملاحظات:</td><td style="padding:8px;border-bottom:1px solid #eee;">${escapeHTML(payment.note)}</td></tr>` : ''}
+                    </table>
+                    <div style="margin-top:20px;padding:16px;background:#ecfdf5;border:2px solid #10b981;border-radius:8px;text-align:center;">
+                        <div style="color:#047857;font-size:0.9rem;">المبلغ المستلم</div>
+                        <div style="color:#10b981;font-size:1.6rem;font-weight:bold;">${payment.amount.toLocaleString()} ${sym}</div>
+                    </div>
+                    <div style="margin-top:24px;display:flex;justify-content:space-between;font-size:0.85rem;color:#666;">
+                        <div>التوقيع: __________________</div>
+                        <div>التاريخ: ${payment.date}</div>
+                    </div>
+                    <div style="margin-top:20px;text-align:center;font-size:0.75rem;color:#94a3b8;border-top:1px solid #eee;padding-top:10px;">
+                        شكراً لثقتكم بـ سبيس نت
+                    </div>
+                </div>
+            `;
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = html;
+            const el = wrapper.firstElementChild;
+            el.style.position = 'fixed'; el.style.left = '-9999px';
+            document.body.appendChild(el);
+            html2pdf().set({
+                margin: 10, filename: `Receipt-${payment.receiptNo}.pdf`,
+                image: { type: 'png' },
+                html2canvas: { scale: 2, backgroundColor: '#ffffff', logging: false },
+                jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
+            }).from(el).save().then(() => {
+                document.body.removeChild(el);
+                showToast('✅ تم إنشاء الإيصال', 'success');
+            }).catch(() => document.body.removeChild(el));
+        }
+
+        async function toggleStatus(id) {
+            const sub = subscribers.find(s => s.id === id);
+            if (!sub) return;
+            if (sub.status === 'disconnected' && isExpired(sub)) {
+                const ok = await customConfirm('هذا الاشتراك منتهي.\nهل تريد تجديده الآن (شهر واحد)؟', 'info');
+                if (ok) await renewSubscription(id, 1);
+                return;
+            }
+            sub.status = sub.status === 'connected' ? 'disconnected' : 'connected';
+            saveAll(); render(); closeDetailsModal();
+            await autoSaveExcel();
+        }
         async function renewSubscription(id, months = 1) {
             const sub = subscribers.find(s => s.id === id);
             if (!sub) return;
+            const payment = {
+                receiptNo: genReceiptNo(todayISO()), date: todayISO(),
+                amount: Number(sub.amount), currency: sub.currency,
+                method: 'تجديد', note: 'تجديد الاشتراك'
+            };
+            if (!sub.payments) sub.payments = [];
+            sub.payments.push(payment);
             sub.startDate = todayISO();
             sub.durationMonths = months;
             sub.expiryDate = addMonths(sub.startDate, months);
             sub.status = 'connected';
-            saveSubscribers();
-            render();
-            closeDetailsModal();
+            saveAll(); render(); closeDetailsModal();
             await autoSaveExcel();
-            showToast(`✅ تم تجديد ${sub.name} لمدة ${months} شهر`, 'success');
+            showToast(`✅ تجديد + دفعة #${payment.receiptNo}`, 'success');
         }
-
-        /* ================== تعديل الحالة ================== */
-        async function toggleStatus(id) {
+        async function deleteSubscriber(id) {
             const sub = subscribers.find(s => s.id === id);
-            if (!sub) return;
-
-            if (sub.status === 'disconnected' && isExpired(sub)) {
-                if (confirm('هذا الاشتراك منتهي. هل تريد تجديده الآن (شهر واحد)؟')) {
-                    await renewSubscription(id, 1);
-                }
+            if (!sub) {
+                showToast('⚠️ المشترك غير موجود', 'error');
                 return;
             }
-
-            sub.status = sub.status === 'connected' ? 'disconnected' : 'connected';
-            saveSubscribers();
-            render();
-            closeDetailsModal();
-            await autoSaveExcel();
+            const ok = await customConfirm(`هل تريد حذف "${sub.name}" نهائياً؟\nلا يمكن التراجع عن هذا الإجراء.`, 'danger');
+            if (!ok) return;
+            try {
+                subscribers = subscribers.filter(s => s.id !== id);
+                saveAll();
+                render();
+                closeDetailsModal();
+                showToast(`🗑️ تم حذف "${sub.name}"`, 'warning');
+                await autoSaveExcel();
+            } catch (err) {
+                console.error('Delete failed:', err);
+                showToast('❌ حدث خطأ أثناء الحذف', 'error');
+            }
         }
 
-        /* ================== حذف ================== */
-        async function deleteSubscriber(id) {
-            if (!confirm('هل تريد إزالة المشترك نهائياً؟')) return;
-            subscribers = subscribers.filter(s => s.id !== id);
-            saveSubscribers();
-            render();
-            closeDetailsModal();
+        function openExpensesModal() {
+            document.getElementById('expense-form-container').style.display = 'none';
+            renderExpenses();
+            document.getElementById('expenses-modal').classList.add('active');
+        }
+        function closeExpensesModal() { document.getElementById('expenses-modal').classList.remove('active'); }
+        function openAddExpenseForm() {
+            document.getElementById('expense-form-container').style.display = 'block';
+            document.getElementById('exp-date').value = todayISO();
+            document.getElementById('exp-amount').value = '';
+            document.getElementById('exp-note').value = '';
+        }
+        function closeAddExpenseForm() { document.getElementById('expense-form-container').style.display = 'none'; }
+        async function handleAddExpense(e) {
+            e.preventDefault();
+            const exp = {
+                id: Date.now(),
+                category: document.getElementById('exp-category').value,
+                amount: Number(document.getElementById('exp-amount').value),
+                currency: document.getElementById('exp-currency').value,
+                date: document.getElementById('exp-date').value,
+                note: document.getElementById('exp-note').value.trim()
+            };
+            expenses.push(exp);
+            saveAll(); renderExpenses(); render(); closeAddExpenseForm();
+            await autoSaveExcel();
+            showToast('✅ تم تسجيل المصروف', 'success');
+        }
+        async function deleteExpense(id) {
+            const ok = await customConfirm('هل تريد حذف هذا المصروف؟', 'danger');
+            if (!ok) return;
+            expenses = expenses.filter(e => e.id !== id);
+            saveAll(); renderExpenses(); render();
             await autoSaveExcel();
         }
+        function renderExpenses() {
+            const list = document.getElementById('expenses-list');
+            const sorted = [...expenses].sort((a,b) => b.date.localeCompare(a.date));
+            document.getElementById('expense-count').textContent = `${sorted.length} عنصر`;
+            if (sorted.length === 0) {
+                list.innerHTML = '<p class="empty-state">لا توجد مصروفات</p>';
+                return;
+            }
+            list.innerHTML = sorted.map(e => `
+                <div class="payment-item expense">
+                    <div class="payment-info">
+                        <strong>${e.amount.toLocaleString()} ${e.currency === 'USD' ? '$' : 'ل.س'}</strong>
+                        <small>${e.category} • ${e.date}${e.note ? ' • ' + escapeHTML(e.note) : ''}</small>
+                    </div>
+                    <div class="payment-actions">
+                        <button class="mini-btn danger" onclick="deleteExpense(${e.id})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-        /* ================== PDF ================== */
+        function openReportsModal() {
+            const now = new Date();
+            const defaultMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+            document.getElementById('report-month').value = defaultMonth;
+            renderReport();
+            document.getElementById('reports-modal').classList.add('active');
+        }
+        function closeReportsModal() { document.getElementById('reports-modal').classList.remove('active'); }
+
+        function renderReport() {
+            const monthStr = document.getElementById('report-month').value;
+            if (!monthStr) return;
+
+            let paidUSD = 0, paidSYP = 0;
+            let expUSD = 0, expSYP = 0;
+            let payCount = 0;
+            const paymentsList = [];
+            const expensesList = [];
+
+            subscribers.forEach(sub => {
+                (sub.payments || []).forEach(p => {
+                    if (p.date && p.date.startsWith(monthStr)) {
+                        payCount++;
+                        if (p.currency === 'USD') paidUSD += Number(p.amount);
+                        else paidSYP += Number(p.amount);
+                        paymentsList.push({ ...p, subName: sub.name });
+                    }
+                });
+            });
+
+            expenses.forEach(e => {
+                if (e.date && e.date.startsWith(monthStr)) {
+                    if (e.currency === 'USD') expUSD += Number(e.amount);
+                    else expSYP += Number(e.amount);
+                    expensesList.push(e);
+                }
+            });
+
+            const profitUSD = paidUSD - expUSD;
+            const profitSYP = paidSYP - expSYP;
+            const isProfit = (profitUSD + profitSYP / settings.exchangeRate) >= 0;
+            const profitClass = isProfit ? '' : ' negative';
+            const profitSign = isProfit ? '+' : '−';
+            const profitWord = isProfit ? 'ربح' : 'خسارة';
+
+            paymentsList.sort((a,b) => a.date.localeCompare(b.date));
+            expensesList.sort((a,b) => a.date.localeCompare(b.date));
+
+            const monthNames = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+            const [y, m] = monthStr.split('-');
+            const monthName = monthNames[Number(m) - 1] + ' ' + y;
+
+            document.getElementById('report-content').innerHTML = `
+                <div style="text-align:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid rgba(255,255,255,0.15);">
+                    <div style="font-size:1.3rem;font-weight:900;color:#93c5fd;letter-spacing:0.5px;">📅 تقرير ${monthName}</div>
+                </div>
+
+                <div class="report-hero">
+                    <div class="report-card revenue">
+                        <div class="report-card-label">💵 إجمالي الإيرادات</div>
+                        <div class="report-card-value">$${paidUSD.toLocaleString()}</div>
+                        <div class="report-card-sub">${paidSYP.toLocaleString()} ل.س</div>
+                    </div>
+                    <div class="report-card expense">
+                        <div class="report-card-label">💸 إجمالي المصروفات</div>
+                        <div class="report-card-value">$${expUSD.toLocaleString()}</div>
+                        <div class="report-card-sub">${expSYP.toLocaleString()} ل.س</div>
+                    </div>
+                    <div class="report-card profit${profitClass}">
+                        <div class="report-card-label">💰 صافي ${profitWord}</div>
+                        <div class="report-card-value">${profitSign}$${Math.abs(profitUSD).toLocaleString()}</div>
+                        <div class="report-card-sub">${profitSign}${Math.abs(profitSYP).toLocaleString()} ل.س</div>
+                    </div>
+                </div>
+
+                <div class="report-summary-box">
+                    <div><span class="sum-label">عدد الدفعات:</span> <strong>${payCount} دفعة</strong></div>
+                    <div><span class="sum-label">عدد المصروفات:</span> <strong>${expensesList.length} مصروف</strong></div>
+                    <div><span class="sum-label">النتيجة:</span> <strong style="color:${isProfit ? '#10b981' : '#f87171'};">${isProfit ? '✅ الشهر مربح' : '⚠️ الشهر بخسارة'}</strong></div>
+                    <div><span class="sum-label">سعر الصرف المستخدم:</span> <strong>1$ = ${settings.exchangeRate.toLocaleString()} ل.س</strong></div>
+                </div>
+
+                <div class="report-section-title payments">
+                    <span>💵 تفاصيل الدفعات (${payCount})</span>
+                    <small style="font-size:0.75rem;font-weight:600;color:#94a3b8;">$${paidUSD.toLocaleString()} + ${paidSYP.toLocaleString()} ل.س</small>
+                </div>
+                ${paymentsList.length > 0 ? paymentsList.map(p => `
+                    <div class="report-detail-item payment">
+                        <div class="report-detail-main">
+                            <div class="rd-name">${escapeHTML(p.subName)}</div>
+                            <div class="rd-meta">📅 ${p.date} • 💳 ${p.method} • #${p.receiptNo}${p.note ? ' • ' + escapeHTML(p.note) : ''}</div>
+                        </div>
+                        <div class="report-detail-amount">${p.amount.toLocaleString()} ${p.currency === 'USD' ? '$' : 'ل.س'}</div>
+                    </div>
+                `).join('') : '<p class="empty-state">لا توجد دفعات هذا الشهر</p>'}
+
+                <div class="report-section-title expenses">
+                    <span>💸 تفاصيل المصروفات (${expensesList.length})</span>
+                    <small style="font-size:0.75rem;font-weight:600;color:#94a3b8;">$${expUSD.toLocaleString()} + ${expSYP.toLocaleString()} ل.س</small>
+                </div>
+                ${expensesList.length > 0 ? expensesList.map(e => `
+                    <div class="report-detail-item expense">
+                        <div class="report-detail-main">
+                            <div class="rd-name">${escapeHTML(e.category)}</div>
+                            <div class="rd-meta">📅 ${e.date}${e.note ? ' • ' + escapeHTML(e.note) : ''}</div>
+                        </div>
+                        <div class="report-detail-amount">${e.amount.toLocaleString()} ${e.currency === 'USD' ? '$' : 'ل.س'}</div>
+                    </div>
+                `).join('') : '<p class="empty-state">لا توجد مصروفات هذا الشهر</p>'}
+            `;
+        }
+
         async function exportPDF(event) {
             if (event) event.preventDefault();
             if (typeof html2pdf === 'undefined') { alert('مكتبة PDF لم تُحمّل'); return; }
             const btn = document.querySelector('.export-btn');
             const area = document.getElementById('export-area');
-            const originalHTML = btn.innerHTML;
+            const orig = btn.innerHTML;
             try {
                 document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
-                btn.innerHTML = '⏳...';
-                btn.disabled = true;
+                btn.innerHTML = '⏳...'; btn.disabled = true;
                 area.classList.add('pdf-export-mode');
                 await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
                 const stamp = new Date().toISOString().slice(0, 16).replace('T', '_').replace(':', '-');
                 await html2pdf().set({
-                    margin: [6, 6, 6, 6],
-                    filename: `SpaceNet-Report-${stamp}.pdf`,
+                    margin: [6,6,6,6],
+                    filename: `SpaceNet-${stamp}.pdf`,
                     image: { type: 'png' },
-                    html2canvas: {
-                        scale: 3, useCORS: true, backgroundColor: '#0b1d3a',
-                        logging: false, scrollY: 0, scrollX: 0,
-                        windowWidth: area.scrollWidth,
-                        foreignObjectRendering: false, letterRendering: true
-                    },
+                    html2canvas: { scale: 3, useCORS: true, backgroundColor: '#0b1d3a',
+                        logging: false, scrollY: 0, scrollX: 0, windowWidth: area.scrollWidth,
+                        foreignObjectRendering: false, letterRendering: true },
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
-                    pagebreak: { mode: ['css', 'legacy'], avoid: ['.subscriber-card', '.stat-box', '.list-section'] }
+                    pagebreak: { mode: ['css','legacy'], avoid: ['.subscriber-card','.stat-box','.finance-box','.list-section'] }
                 }).from(area).save();
-            } catch (err) {
-                console.error(err);
-                alert('حدث خطأ أثناء إنشاء PDF');
-            } finally {
+            } catch(err) { console.error(err); alert('خطأ في PDF'); }
+            finally {
                 area.classList.remove('pdf-export-mode');
-                btn.innerHTML = originalHTML;
-                btn.disabled = false;
+                btn.innerHTML = orig; btn.disabled = false;
             }
         }
 
-        /* ================== التهيئة ================== */
         (async function init() {
-            subscribers = loadSubscribers();
+            loadAll();
+            if (!subscribers.length) subscribers = DEFAULT_SUBSCRIBERS.slice();
+            subscribers.forEach(s => { if (!Array.isArray(s.payments)) s.payments = []; });
 
             if (localStorage.getItem(SESSION_KEY) !== 'true') {
                 document.getElementById('login-overlay').classList.add('active');
                 document.querySelector('.fab').style.display = 'none';
             }
-
             if (localStorage.getItem(THEME_KEY) === 'light') {
                 document.body.classList.add('light-mode');
             }
             updateThemeBtn();
 
-            const speedSelect = document.getElementById('speed');
+            const speedSel = document.getElementById('speed');
             for (let i = 1; i <= 100; i++) {
                 const opt = document.createElement('option');
-                opt.value = `${i} ميجا`;
-                opt.textContent = `${i} ميجا`;
-                speedSelect.appendChild(opt);
+                opt.value = `${i} ميجا`; opt.textContent = `${i} ميجا`;
+                speedSel.appendChild(opt);
             }
 
             document.getElementById('start-date').addEventListener('change', updateExpiryPreview);
@@ -1269,16 +2068,13 @@
                     excelFileHandle = handle;
                     if (handle.queryPermission) {
                         const perm = await handle.queryPermission({ mode: 'readwrite' });
-                        if (perm === 'granted') {
-                            document.getElementById('excel-link-btn').classList.add('linked');
-                        }
+                        if (perm === 'granted') document.getElementById('excel-link-btn').classList.add('linked');
                     }
                 }
-            } catch (e) { console.warn('تعذّر استرجاع مرجع Excel:', e); }
+            } catch(e) {}
 
             await checkExpirations();
             setInterval(checkExpirations, EXPIRY_CHECK_INTERVAL);
-
             document.addEventListener('visibilitychange', () => {
                 if (!document.hidden) checkExpirations();
             });
